@@ -1,0 +1,10 @@
+spring:
+  redis:
+    order:
+      host: localhost
+      port: 6379
+      password: bdtd123
+    user:
+      host: localhost
+      port: 6379
+      password: bdtd123
