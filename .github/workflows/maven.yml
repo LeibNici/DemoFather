@@ -26,6 +26,13 @@ jobs:
     - name: Maven打包
       run: mvn -B package --file pom.xml
 
+    - name: 获取所有jar包
+      run: |
+        ARTIFACT_PATHNAME=$(ls /home/runner/work/DemoFather/DemoFather/SpringStartupSequence/target/*.jar | head -n 1)
+        ARTIFACT_NAME=$(basename $ARTIFACT_PATHNAME)
+        echo ::set-env name=ARTIFACT_NAME::${ARTIFACT_NAME}
+        echo ::set-env name=ARTIFACT_PATHNAME::${ARTIFACT_PATHNAME}
+
     - name: 创建最新release
       uses: actions/create-release@v1
       env:
@@ -39,13 +46,6 @@ jobs:
             - Second Change
         draft: false
         prerelease: false
-
-    - name: 获取所有jar包
-      run: |
-        ARTIFACT_PATHNAME=$(ls /home/runner/work/DemoFather/DemoFather/SpringStartupSequence/target/*.jar | head -n 1)
-        ARTIFACT_NAME=$(basename $ARTIFACT_PATHNAME)
-        echo ::set-env name=ARTIFACT_NAME::${ARTIFACT_NAME}
-        echo ::set-env name=ARTIFACT_PATHNAME::${ARTIFACT_PATHNAME}
 
     - name: upload release asset ${{ env.GITHUB_TAG }}
       id: upload-release-asset
