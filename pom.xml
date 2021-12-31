@@ -7,6 +7,7 @@
         <module>SpringStartupSequence</module>
         <module>SpringDynamicRedis</module>
         <module>ObjectEqualsAndHashcode</module>
+        <module>SpringMycat</module>
     </modules>
     <parent>
         <groupId>org.springframework.boot</groupId>

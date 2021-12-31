@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<!DOCTYPE mycat:schema SYSTEM "schema.dtd">
+<mycat:schema xmlns:mycat="http://io.mycat/">
+
+	<schema name="TESTDB" checkSQLschema="false" sqlMaxLimit="100" dataNode="dn1">
+		<table name="user" dataNode="dn1" rule="harding-by-month"></table>
+	</schema>
+
+	<dataNode name="dn1" dataHost="host1" database="mycat" />
+
+	<dataHost name="host1" maxCon="1000" minCon="10" balance="0"
+          writeType="0" dbType="mysql" dbDriver="jdbc" switchType="1"  slaveThreshold="100">
+		<heartbeat>select user()</heartbeat>
+		<writeHost host="hostM1" url="jdbc:mysql://192.168.85.129:3306?useSSL=false&amp;serverTimezone=UTC"
+               user="root" password="123456" />
+	</dataHost>
+
+</mycat:schema>
