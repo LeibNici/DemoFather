@@ -1,5 +1,6 @@
 package com.shardingSphere.DynamicTableName;
 
+import com.shardingSphere.utils.TableUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.shardingsphere.api.sharding.standard.PreciseShardingAlgorithm;
 import org.apache.shardingsphere.api.sharding.standard.PreciseShardingValue;
@@ -18,10 +19,10 @@ public class DatePreciseShardingAlgorithm implements PreciseShardingAlgorithm<Da
         Date date = preciseShardingValue.getValue();
         String DateString = new SimpleDateFormat("yyyyMM").format(date);
         for (String tableName : collection) {
-            if (tableName.endsWith(DateString)){
+            if (tableName.endsWith(DateString) && TableUtil.checkTable(tableName)) {
                 return tableName;
             }
         }
-        return null;
+        return TableUtil.createTable(DateString);
     }
 }

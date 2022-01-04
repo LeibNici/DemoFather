@@ -30,9 +30,9 @@ public class DriverController {
     @GetMapping("/insert")
     public void test2() {
         User user = new User();
-        user.setName("ddd");
-        user.setCreateTime(new Date(1643953796000L));
-        user.setAge(16);
+        user.setCreateTime(new Date(1649060097000L));
+        user.setName("chenming");
+        user.setAge(18);
         userShardingMapper.insert(user);
     }
 

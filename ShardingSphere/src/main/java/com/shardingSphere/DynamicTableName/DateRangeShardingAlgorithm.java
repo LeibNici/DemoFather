@@ -1,14 +1,11 @@
 package com.shardingSphere.DynamicTableName;
 
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.google.common.collect.Range;
-import com.shardingSphere.mapper.UserShardingMapper;
-import com.shardingSphere.utils.IsTableExistUtil;
 import com.shardingSphere.utils.ShardingUtils;
+import com.shardingSphere.utils.TableUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.shardingsphere.api.sharding.standard.RangeShardingAlgorithm;
 import org.apache.shardingsphere.api.sharding.standard.RangeShardingValue;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -31,7 +28,7 @@ public class DateRangeShardingAlgorithm implements RangeShardingAlgorithm<Date> 
 
         for (String tableName : collection) {
             for (String rangeOne : range) {
-                if (tableName.endsWith(rangeOne) && IsTableExistUtil.checkTable(tableName)) {
+                if (tableName.endsWith(rangeOne) && TableUtil.checkTable(tableName)) {
                     tableList.add(tableName);
                 }
             }
