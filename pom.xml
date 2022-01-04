@@ -10,6 +10,7 @@
         <module>SpringMycat</module>
         <module>SpringSharding</module>
         <module>ShardingSphere</module>
+        <module>SpringActivities</module>
     </modules>
     <parent>
         <groupId>org.springframework.boot</groupId>
