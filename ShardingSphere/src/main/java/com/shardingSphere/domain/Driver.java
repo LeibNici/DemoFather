@@ -7,8 +7,9 @@ import java.util.Date;
 @Data
 public class Driver {
 
+    private int id;
     private String name;
-    private Integer age;
+    private String dept;
     private Date create_time;
 
 }
