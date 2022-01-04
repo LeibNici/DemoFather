@@ -2,7 +2,7 @@
 <!DOCTYPE mapper
 PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.cm.mapper.UserMapper">
+<mapper namespace="com.cm.mapper.UserShardingMapper">
 
 <!--    <insert id="insert" parameterType="com.cm.domain.User" useGeneratedKeys="true" keyProperty="id">-->
 <!--        insert into user-->

@@ -1,0 +1,23 @@
+spring:
+  shardingsphere:
+    dataSource:
+      names: ds1
+      ds1:
+        type: com.alibaba.druid.pool.DruidDataSource
+        driverClassName: com.mysql.jdbc.Driver
+        url: jdbc:mysql://127.0.0.1:3306/mytest
+        username: root
+        password: 123456
+    props:
+      sql:
+        show: true
+
+    sharding:
+      tables:
+        user:
+          actual-data-nodes: ds1.user_$->{202201..202212}
+          table-strategy:
+            standard:
+              sharding-column: create_time
+              precise-algorithm-class-name: com.shardingSphere.DynamicTableName.DatePreciseShardingAlgorithm
+              range-algorithm-class-name: com.shardingSphere.DynamicTableName.DateRangeShardingAlgorithm

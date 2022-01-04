@@ -1,13 +1,12 @@
-package com.cm;
+package com.shardingSphere;
 
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-@MapperScan("com.cm.mapper")
-public class SpringShardingApplication {
+public class ShardingSphere {
     public static void main(String[] args) {
-        SpringApplication.run(SpringShardingApplication.class);
+        SpringApplication.run(ShardingSphere.class);
     }
 }
