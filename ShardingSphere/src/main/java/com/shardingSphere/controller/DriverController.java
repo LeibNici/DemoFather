@@ -22,7 +22,7 @@ public class DriverController {
     public void test() {
         QueryWrapper<User> queryWrapper = new QueryWrapper();
         queryWrapper.gt("create_time",new Date(1641018247000L));
-        queryWrapper.lt("create_time",new Date(1644474247000L));
+        queryWrapper.lt("create_time",new Date(1646893447000L));
         List<User> users = userShardingMapper.selectList(queryWrapper);
         log.info(String.valueOf(users.size()));
     }

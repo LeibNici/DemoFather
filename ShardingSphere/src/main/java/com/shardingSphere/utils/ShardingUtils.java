@@ -8,8 +8,6 @@ import java.util.TreeSet;
 
 public class ShardingUtils {
 
-    private static Calendar calendar = Calendar.getInstance();
-
     private static SimpleDateFormat sdf = new SimpleDateFormat("yyyyMM");
 
     public static TreeSet<String> getRange(String startTime, String endTime) {
@@ -30,7 +28,7 @@ public class ShardingUtils {
                     list.add(sdf.format(startDate));
                     // 设置日期
                     calendar.setTime(startDate);
-                    //把日期增加一天
+                    //把日期增加一个月
                     calendar.add(Calendar.MONTH, 1);
                     // 获取增加后的日期
                     startDate=calendar.getTime();
