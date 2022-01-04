@@ -10,3 +10,4 @@ mybatis-plus:
   type-aliases-package: com.cm.domain
   configuration:
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+

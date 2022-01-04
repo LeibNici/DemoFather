@@ -13,10 +13,11 @@ public class mainTest {
 
     public static void main(String[] args) {
 
-//        User user1 = new User();
-//        user1.setUsername("chenmign");
+        User user1 = new User();
+        user1.setUsername("chenmign");
 //        user1.setDate(new Date());
-//        user1.setAge(123);
+
+        log.info(String.valueOf(user1.getAge()));
 //
 //        User user2 = new User();
 //        user2.setUsername("chenmign");
@@ -34,13 +35,13 @@ public class mainTest {
 //        user4.setAge(123);
 //
 //        log.info("使用lombok + exclude排除比较属性  " + user3.equals(user4));
-        Timestamp timestamp = new Timestamp(1640851813000L);
-        Timestamp timestamp1 = new Timestamp(1640851813000L-60000L);
-
-        String format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(timestamp);
-        String format1 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(timestamp1);
-
-        log.info(format);
+//        Timestamp timestamp = new Timestamp(1640851813000L);
+//        Timestamp timestamp1 = new Timestamp(1640851813000L-60000L);
+//
+//        String format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(timestamp);
+//        String format1 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(timestamp1);
+//
+//        log.info(format);
 
 
     }
