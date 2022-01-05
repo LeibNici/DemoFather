@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:camunda="http://camunda.org/schema/1.0/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.kafeitu.me/activiti/leave" exporter="Camunda Modeler" exporterVersion="4.11.1">
+  <process id="leave" name="请假流程-普通表单" isExecutable="true">
+    <documentation>请假流程演示</documentation>
+    <startEvent id="startevent1" name="Start" camunda:initiator="applyUserId">
+      <outgoing>flow2</outgoing>
+    </startEvent>
+    <endEvent id="endevent1" name="End">
+      <incoming>Flow_04f1vwl</incoming>
+    </endEvent>
+    <userTask id="hrVerify" name="人事审批" camunda:assignee="diedie">
+      <incoming>Flow_0n9cbnf</incoming>
+      <outgoing>Flow_04f1vwl</outgoing>
+    </userTask>
+    <userTask id="deptLeaderVerify" name="部门领导审批" camunda:assignee="chenming">
+      <incoming>flow2</incoming>
+      <outgoing>Flow_0n9cbnf</outgoing>
+    </userTask>
+    <sequenceFlow id="flow2" sourceRef="startevent1" targetRef="deptLeaderVerify" />
+    <sequenceFlow id="Flow_0n9cbnf" sourceRef="deptLeaderVerify" targetRef="hrVerify" />
+    <sequenceFlow id="Flow_04f1vwl" sourceRef="hrVerify" targetRef="endevent1" />
+  </process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_leave">
+    <bpmndi:BPMNPlane id="BPMNPlane_leave" bpmnElement="leave">
+      <bpmndi:BPMNEdge id="BPMNEdge_flow2" bpmnElement="flow2">
+        <omgdi:waypoint x="195" y="113" />
+        <omgdi:waypoint x="240" y="113" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0n9cbnf_di" bpmnElement="Flow_0n9cbnf">
+        <omgdi:waypoint x="345" y="114" />
+        <omgdi:waypoint x="467" y="114" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_04f1vwl_di" bpmnElement="Flow_04f1vwl">
+        <omgdi:waypoint x="572" y="114" />
+        <omgdi:waypoint x="742" y="114" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="BPMNShape_startevent1" bpmnElement="startevent1">
+        <omgdc:Bounds x="160" y="96" width="35" height="35" />
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds x="165" y="131" width="25" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_deptLeaderVerify" bpmnElement="deptLeaderVerify">
+        <omgdc:Bounds x="240" y="86" width="105" height="55" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_endevent1" bpmnElement="endevent1">
+        <omgdc:Bounds x="742" y="96" width="35" height="35" />
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds x="750" y="131" width="20" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_hrVerify" bpmnElement="hrVerify">
+        <omgdc:Bounds x="467" y="86" width="105" height="55" />
+      </bpmndi:BPMNShape>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</definitions>

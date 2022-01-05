@@ -1,0 +1,18 @@
+spring:
+  activiti:
+    database-schema-update: true
+    history-level: full
+    db-history-used: true
+
+  datasource:
+    type: com.alibaba.druid.pool.DruidDataSource
+    driverClassName: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://49.235.126.46:6001/activiti
+    username: root
+    password: 123456
+
+  security:
+    user:
+      name: user
+      password: 123456
+
