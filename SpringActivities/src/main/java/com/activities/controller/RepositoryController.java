@@ -1,6 +1,5 @@
 package com.activities.controller;
 
-import com.alibaba.fastjson.JSON;
 import lombok.extern.slf4j.Slf4j;
 import org.activiti.engine.*;
 import org.activiti.engine.repository.Deployment;
@@ -11,8 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.io.File;
-import java.net.URL;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -87,7 +84,7 @@ public class RepositoryController {
     public void findTask() {
         List<Task> list = taskService.createTaskQuery()
                 .processDefinitionKey("leave")
-                .taskAssignee("chenming")
+                .taskCandidateGroup("deptLeader")
                 .list();
 
         list.forEach(task -> {
@@ -102,7 +99,7 @@ public class RepositoryController {
     public void completTask() {
         Task task = taskService.createTaskQuery()
                 .processDefinitionKey("leave")
-                .taskAssignee("worker")
+                .taskCandidateGroup("deptLeader")
                 .singleResult();
         taskService.complete(task.getId());
     }
@@ -113,6 +110,5 @@ public class RepositoryController {
                 .processDefinitionKey("leave")
                 .singleResult();
         log.info(String.valueOf(leave.isSuspended()));
-//        repositoryService.activateProcessDefinitionByKey("leave");
     }
 }
