@@ -6,14 +6,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
     <resultMap type="com.shardingSphere.domain.BusCarOperation" id="BusCarOperationResult">
         <result property="id"    column="id"    />
-        <result property="carNum"    column="car_num"    />
         <result property="siteX"    column="site_x"    />
         <result property="siteY"    column="site_y"    />
-        <result property="areaName"    column="area_name"    />
-        <result property="areaNum"    column="area_num"    />
         <result property="recordDate"    column="record_date"    />
-        <result property="areaLocation"    column="area_location"    />
-        <result property="carType"    column="car_type"    />
     </resultMap>
 
     <sql id="selectBusCarOperationVo">
@@ -30,23 +25,15 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         insert into bus_car_operation
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="id != null">id,</if>
-            <if test="carNum != null">car_num,</if>
             <if test="siteX != null">site_x,</if>
             <if test="siteY != null">site_y,</if>
-            <if test="areaNum != null">area_num,</if>
             <if test="recordDate != null">record_date,</if>
-            <if test="areaLocation != null">area_location,</if>
-            <if test="cardNumber != null">card_number,</if>
          </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="id != null">#{id},</if>
-            <if test="carNum != null">#{carNum},</if>
             <if test="siteX != null">#{siteX},</if>
             <if test="siteY != null">#{siteY},</if>
-            <if test="areaNum != null">#{areaNum},</if>
             <if test="recordDate != null">#{recordDate},</if>
-            <if test="areaLocation != null">#{areaLocation},</if>
-            <if test="cardNumber != null">#{cardNumber},</if>
          </trim>
     </insert>
 

@@ -14,7 +14,7 @@ spring:
 
     sharding:
       tables:
-        user:
+        bus_car_operation:
           actual-data-nodes: ds1.bus_car_operation_$->{202201..202212}
           table-strategy:
             standard:
