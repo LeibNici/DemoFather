@@ -15,9 +15,14 @@ spring:
     sharding:
       tables:
         user:
-          actual-data-nodes: ds1.user_$->{202201..202212}
+          actual-data-nodes: ds1.bus_car_operation_$->{202201..202212}
           table-strategy:
             standard:
-              sharding-column: create_time
+              sharding-column: record_date
               precise-algorithm-class-name: com.shardingSphere.DynamicTableName.DatePreciseShardingAlgorithm
               range-algorithm-class-name: com.shardingSphere.DynamicTableName.DateRangeShardingAlgorithm
+  redis:
+    host: localhost
+    port: 6379
+    password: bdtd123
+    database: 0
