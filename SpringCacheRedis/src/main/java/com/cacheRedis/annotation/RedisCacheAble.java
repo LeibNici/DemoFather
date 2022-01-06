@@ -16,6 +16,9 @@ public @interface RedisCacheAble {
     //缓存转换对象
     public Class transfer() default Object.class;
 
+    //缓存转换对象
+    public String[] selectProp() default {};
+
     //缓存时间
     public long expireTime() default 5;
 
