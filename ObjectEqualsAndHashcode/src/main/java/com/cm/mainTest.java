@@ -1,23 +1,27 @@
 package com.cm;
 
+import com.cm.domian.Driver;
 import com.cm.domian.User;
 import com.cm.domian.UserLombok;
+import com.cm.domian.vo.DriverVo;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.BeanUtils;
 
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Dictionary;
 
 @Slf4j
 public class mainTest {
 
     public static void main(String[] args) {
 
-        User user1 = new User();
-        user1.setUsername("chenmign");
+//        User user1 = new User();
+//        user1.setUsername("chenmign");
 //        user1.setDate(new Date());
 
-        log.info(String.valueOf(user1.getAge()));
+//        log.info(String.valueOf(user1.getAge()));
 //
 //        User user2 = new User();
 //        user2.setUsername("chenmign");
@@ -43,9 +47,17 @@ public class mainTest {
 //
 //        log.info(format);
 
+        Driver driver = new Driver();
+        driver.setName("chenming");
+        driver.setCity("qingdao");
+        driver.setCountry("zhongguo");
+
+        DriverVo driverVo = new DriverVo();
+        BeanUtils.copyProperties(driver,driverVo);
+
+        driver.getAge();
 
     }
-
 
 
 }

@@ -1,5 +1,6 @@
 package com.cacheRedis.controller;
 
+import com.alibaba.fastjson.JSON;
 import com.cacheRedis.service.ResultServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -12,8 +13,8 @@ public class ResultController {
     private ResultServiceImpl resultService;
 
     @GetMapping("/get")
-    public void test(){
-        resultService.result();
+    public String test() {
+        return JSON.toJSONString(resultService.result());
     }
 
 }
