@@ -1,5 +1,6 @@
 package com.shardingSphere.domain;
 
+import com.baomidou.mybatisplus.annotation.TableName;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 
@@ -12,6 +13,7 @@ import java.util.Objects;
  * @author mxg
  * @date 2021-02-23
  */
+@TableName("bus_car_operation")
 @Data
 public class BusCarOperation extends BaseEntity {
     private static final long serialVersionUID = 1L;

@@ -1,0 +1,28 @@
+spring:
+  shardingsphere:
+    dataSource:
+      names: ds1
+      ds1:
+        type: com.alibaba.druid.pool.DruidDataSource
+        driverClassName: com.mysql.jdbc.Driver
+        url: jdbc:mysql://127.0.0.1:3306/mytest
+        username: root
+        password: 123456
+    props:
+      sql:
+        show: true
+
+    sharding:
+      tables:
+        bus_car_operation:
+          actual-data-nodes: ds1.bus_car_operation_$->{202201..202212}
+          table-strategy:
+            standard:
+              sharding-column: record_date
+              precise-algorithm-class-name: com.autoCreateTable.DynamicTableName.DatePreciseShardingAlgorithm
+              range-algorithm-class-name: com.autoCreateTable.DynamicTableName.DateRangeShardingAlgorithm
+  redis:
+    host: localhost
+    port: 6379
+    password: bdtd123
+    database: 0

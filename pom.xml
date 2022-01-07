@@ -13,6 +13,8 @@
         <module>SpringActivities</module>
         <module>SpringCacheRedis</module>
         <module>SpringMybatisPlus</module>
+        <module>AutoCreateTable</module>
+        <module>SpringTest</module>
     </modules>
     <parent>
         <groupId>org.springframework.boot</groupId>
