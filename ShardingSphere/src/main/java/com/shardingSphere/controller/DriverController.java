@@ -5,6 +5,7 @@ import com.shardingSphere.domain.Driver;
 import com.shardingSphere.domain.User;
 import com.shardingSphere.mapper.DriverMapper;
 import com.shardingSphere.mapper.UserShardingMapper;
+import com.shardingSphere.utils.TableUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @Slf4j
@@ -25,8 +27,8 @@ public class DriverController {
     @GetMapping("/getUser")
     public void test() {
         QueryWrapper<User> queryWrapper = new QueryWrapper();
-        queryWrapper.gt("create_time",new Date(1641018247000L));
-        queryWrapper.lt("create_time",new Date(1646893447000L));
+        queryWrapper.gt("create_time", new Date(1641018247000L));
+        queryWrapper.lt("create_time", new Date(1646893447000L));
         List<User> users = userShardingMapper.selectList(queryWrapper);
         log.info(String.valueOf(users.size()));
     }
@@ -52,9 +54,15 @@ public class DriverController {
     @GetMapping("/getDriver")
     public void test4() {
         QueryWrapper<Driver> driverQueryWrapper = new QueryWrapper<>();
-        driverQueryWrapper.eq("create_time",new Date(1641284680000L));
+        driverQueryWrapper.eq("create_time", new Date(1641284680000L));
         Driver driver = driverMapper.selectOne(driverQueryWrapper);
         log.info(driver.getDept());
+    }
+
+    @GetMapping("/showCreateTable")
+    public void test5() {
+        Map<Object,Object> s = TableUtil.showCreateTable();
+        s.size();
     }
 
 }

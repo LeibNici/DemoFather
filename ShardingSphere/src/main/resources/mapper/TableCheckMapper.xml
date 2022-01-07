@@ -14,4 +14,8 @@
         ${sql}
     </update>
 
+    <select id="showCreateTbaleSql" resultType="java.util.Map" parameterType="java.lang.String">
+        show create table ${tableName}
+    </select>
+
 </mapper>

@@ -8,6 +8,7 @@ import javax.annotation.PostConstruct;
 import javax.sql.DataSource;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Map;
 
 @Component
 public class TableUtil {
@@ -49,5 +50,9 @@ public class TableUtil {
                 ") ENGINE=InnoDB AUTO_INCREMENT=28974886 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin ROW_FORMAT=DYNAMIC COMMENT='车辆运行记录表'";
         tableUtil.tableCheckMapper.executeSql(sql);
         return tableName;
+    }
+
+    public static Map<Object, Object> showCreateTable() {
+        return tableUtil.tableCheckMapper.showCreateTbaleSql("bus_car_operation");
     }
 }

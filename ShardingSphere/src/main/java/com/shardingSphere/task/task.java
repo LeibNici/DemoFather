@@ -21,7 +21,7 @@ public class task {
     @Autowired
     private BusCarOperationMapper busCarOperationMapper;
 
-    @Scheduled(fixedRate = 1000)
+//    @Scheduled(fixedRate = 1000)
     public void te() {
 
         // 车辆运行记录添加

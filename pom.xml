@@ -12,6 +12,7 @@
         <module>ShardingSphere</module>
         <module>SpringActivities</module>
         <module>SpringCacheRedis</module>
+        <module>SpringMybatisPlus</module>
     </modules>
     <parent>
         <groupId>org.springframework.boot</groupId>
