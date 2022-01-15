@@ -1,6 +1,7 @@
 package com.autoCreateTable.utils;
 
 import com.autoCreateTable.mapper.TableCheckMapper;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -8,6 +9,7 @@ import javax.annotation.PostConstruct;
 import java.util.Map;
 
 @Component
+
 public class TableUtil {
 
     @Autowired

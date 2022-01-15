@@ -19,8 +19,8 @@ spring:
           table-strategy:
             standard:
               sharding-column: record_date
-              precise-algorithm-class-name: com.shardingSphere.DynamicTableName.DatePreciseShardingAlgorithm
-              range-algorithm-class-name: com.shardingSphere.DynamicTableName.DateRangeShardingAlgorithm
+              precise-algorithm-class-name: com.shardingSphere.com.springtest.DynamicTableName.DatePreciseShardingAlgorithm
+              range-algorithm-class-name: com.shardingSphere.com.springtest.DynamicTableName.DateRangeShardingAlgorithm
   redis:
     host: localhost
     port: 6379
