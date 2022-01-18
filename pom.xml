@@ -15,6 +15,7 @@
         <module>SpringMybatisPlus</module>
         <module>AutoCreateTable</module>
         <module>SpringTest</module>
+        <module>InterfaceConcurrency</module>
     </modules>
     <parent>
         <groupId>org.springframework.boot</groupId>
