@@ -16,6 +16,7 @@
         <module>AutoCreateTable</module>
         <module>SpringTest</module>
         <module>InterfaceConcurrency</module>
+        <module>SpringTest2</module>
     </modules>
     <parent>
         <groupId>org.springframework.boot</groupId>

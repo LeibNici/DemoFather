@@ -6,20 +6,16 @@ import com.springtest.domain.BusCarOperation;
 import com.springtest.domain.BusCarOperation_11;
 import com.springtest.domain.BusCarOperation_12;
 import com.springtest.mapper.TableCheckMapper;
-import com.springtest.service.BusCarOperationService11;
 import com.springtest.service.Impl.BusCarEnterMineServiceImpl;
 import com.springtest.service.Impl.BusCarOperationServiceImpl;
 import com.springtest.service.Impl.BusCarOperationServiceImpl11;
 import com.springtest.service.Impl.BusCarOperationServiceImpl12;
-import javafx.beans.binding.ObjectExpression;
 import lombok.extern.slf4j.Slf4j;
-import org.omg.CosNaming.IstringHelper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.xml.crypto.dsig.keyinfo.RetrievalMethod;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -127,5 +123,10 @@ public class testController {
                 "    and (bco.record_date between '2021-11-24 15:31:18.0' and '2021-11-28 06:01:20.0')\n" +
                 "    order by bco.record_date desc");
         return busCarOperation_11s;
+    }
+
+    @PostMapping("/get")
+    public Map<String, Object> get(){
+        return new HashMap<>();
     }
 }
