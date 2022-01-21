@@ -17,6 +17,7 @@
         <module>SpringTest</module>
         <module>InterfaceConcurrency</module>
         <module>SpringTest2</module>
+        <module>SpringUploadFile</module>
     </modules>
     <parent>
         <groupId>org.springframework.boot</groupId>

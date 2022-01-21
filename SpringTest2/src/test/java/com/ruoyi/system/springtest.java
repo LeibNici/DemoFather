@@ -1,5 +1,6 @@
 package com.ruoyi.system;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.ruoyi.system.domain.RemotePoint;
 import com.ruoyi.system.redis.service.RedisService;
 import com.ruoyi.system.service.Impl.RemotePointServiceImpl;
@@ -23,7 +24,10 @@ public class springtest {
 
     @Test
     public void S() {
-        List<RemotePoint> list = remotePointService.list();
+//        QueryWrapper<RemotePoint> queryWrapper = new QueryWrapper();
+//        queryWrapper.likeRight("record_date","2021-10-30");
+        List<RemotePoint> list = remotePointService.list(null);
+//        System.out.println(list.size());
         redisService.setCacheObject("remotePoint", list);
     }
 

@@ -79,7 +79,7 @@ public class MainTest {
     @Test
     public void test4() throws Exception {
         String result = "";
-        HttpURLConnection connection = (HttpURLConnection) new URL("https://mock.apipost.cn/app/mock/project/916f248a-1033-44e7-9170-337f4c72a33d/get").openConnection();
+        HttpURLConnection connection = (HttpURLConnection) new URL("https://mock.apipost.cn/app/mock/project/916f248a-1033-44e7-9170-337f4c72a33d/get1").openConnection();
         connection.setRequestMethod("GET");
         InputStream is = connection.getInputStream();
         //构造一个字符流缓存
