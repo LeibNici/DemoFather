@@ -2,7 +2,6 @@ package com.springtest;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
-import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.springtest.domain.BusCarEnterMine;
@@ -11,20 +10,15 @@ import com.springtest.domain.RemotePoint;
 import com.springtest.service.Impl.BusCarEnterMineServiceImpl;
 import com.springtest.service.Impl.BusCarOperationServiceImpl;
 import com.springtest.service.Impl.RemotePointServiceImpl;
-import com.sun.deploy.net.HttpResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import java.awt.geom.Point2D;
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
-import java.math.BigDecimal;
 import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -79,7 +73,7 @@ public class MainTest {
     @Test
     public void test4() throws Exception {
         String result = "";
-        HttpURLConnection connection = (HttpURLConnection) new URL("https://mock.apipost.cn/app/mock/project/916f248a-1033-44e7-9170-337f4c72a33d/get1").openConnection();
+        HttpURLConnection connection = (HttpURLConnection) new URL("https://mock.apipost.cn/app/mock/project/916f248a-1033-44e7-9170-337f4c72a33d/get3").openConnection();
         connection.setRequestMethod("GET");
         InputStream is = connection.getInputStream();
         //构造一个字符流缓存
@@ -93,7 +87,7 @@ public class MainTest {
         JSONArray point2DS = data.get("0");
 
         Calendar calendar = Calendar.getInstance();
-        calendar.setTime(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse("2021-10-30 09:19:37"));
+        calendar.setTime(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse("2021-11-24 14:19:37"));
 
         List<RemotePoint> remotePointList = new ArrayList<>();
 
