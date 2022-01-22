@@ -24,11 +24,12 @@ public class RecordPointTest {
     @Test
     public void test1() {
 
-        Point2D.Double startPoint = new Point2D.Double(0, 0);
-        Point2D.Double endPoint = new Point2D.Double(5, 0);
-        Double slope = PointUtils.slope(startPoint, endPoint);
-        List<Point2D.Double> pointList = PointUtils.BasePoint(startPoint, endPoint, Thresold);
-        pointList.size();
+        Point2D.Double endPoint = new Point2D.Double(7783.036183263381, 6278.442228690571);
+        Point2D.Double startPoint = new Point2D.Double(6579.057884500161, 5371.787018467159);
+        
+        Point2D.Double real = new Point2D.Double(6659.917802107004,5401.0134924270615);
+        Point2D.Double aDouble = PointUtils.mapPoint(startPoint, endPoint, real);
+        aDouble.getY();
 
     }
 

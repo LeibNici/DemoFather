@@ -1,8 +1,10 @@
 package com.shardingSphere.controller;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.shardingSphere.domain.BusCarOperation;
 import com.shardingSphere.domain.Driver;
 import com.shardingSphere.domain.User;
+import com.shardingSphere.mapper.BusCarOperationMapper;
 import com.shardingSphere.mapper.DriverMapper;
 import com.shardingSphere.mapper.UserShardingMapper;
 import com.shardingSphere.utils.TableUtil;
@@ -24,6 +26,9 @@ public class DriverController {
     @Autowired
     private DriverMapper driverMapper;
 
+    @Autowired
+    private BusCarOperationMapper busCarOperationMapper;
+
     @GetMapping("/getUser")
     public void test() {
         QueryWrapper<User> queryWrapper = new QueryWrapper();
@@ -44,11 +49,9 @@ public class DriverController {
 
     @GetMapping("/insertDriver")
     public void test3() {
-        Driver driver = new Driver();
-        driver.setName("chenming");
-        driver.setDept("beidou");
-        driver.setCreate_time(new Date());
-        driverMapper.insert(driver);
+        BusCarOperation busCarOperation = new BusCarOperation();
+        busCarOperation.setRecordDate(new Date());
+        busCarOperationMapper.insert(busCarOperation);
     }
 
     @GetMapping("/getDriver")

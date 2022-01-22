@@ -29,6 +29,5 @@ public class task {
         busCarOperation.setSiteX("2");
         busCarOperation.setSiteY("3");
         busCarOperation.setRecordDate(new Date());
-        busCarOperationMapper.insertBusCarOperation(busCarOperation);
     }
 }
