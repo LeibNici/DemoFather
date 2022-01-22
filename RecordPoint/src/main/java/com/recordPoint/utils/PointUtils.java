@@ -5,9 +5,11 @@ import sun.util.resources.cldr.ig.CurrencyNames_ig;
 
 import java.awt.geom.Point2D;
 import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author chenming
@@ -28,13 +30,12 @@ public class PointUtils {
         // 两点之间距离
         Double distance = distance(startPoint, endPoint);
         // 均分份数
-        BigDecimal numberOfCopies = new BigDecimal(distance).divide(new BigDecimal(Threshold));
+        BigDecimal numberOfCopies = new BigDecimal(distance).divide(new BigDecimal(Threshold), BigDecimal.ROUND_HALF_UP);
 
         // 初始化结果集
         List<Point2D.Double> resultList = new LinkedList<>();
         for (int i = 0; i < numberOfCopies.intValue(); i++) {
-            Point2D.Double onePoint = new Point2D.Double(startPoint.getX() + Threshold * i, startPoint.getY() + Threshold * i);
-            resultList.add(onePoint);
+
         }
         return resultList;
     }
@@ -68,7 +69,7 @@ public class PointUtils {
         }
         // 两点非水平垂直关系
         else {
-            return new BigDecimal(endPoint.getY() - startPoint.getY()).divide(new BigDecimal(endPoint.getX() - startPoint.getX())).doubleValue();
+            return new BigDecimal(endPoint.getY() - startPoint.getY()).divide(new BigDecimal(endPoint.getX() - startPoint.getX()), 4, BigDecimal.ROUND_HALF_UP).doubleValue();
         }
     }
 
@@ -95,8 +96,8 @@ public class PointUtils {
 
         // 求单位向量
         Point2D.Double unitVector = new Point2D.Double(endPoint.getX() - startPoint.getX(), endPoint.getY() - startPoint.getY());
-        BigDecimal xVector = new BigDecimal(unitVector.getX()).divide(new BigDecimal(Math.sqrt(Math.pow(unitVector.getX(), 2) + Math.pow(unitVector.getY(), 2))), 4, BigDecimal.ROUND_HALF_UP);
-        BigDecimal yVector = new BigDecimal(unitVector.getY()).divide(new BigDecimal(Math.sqrt(Math.pow(unitVector.getX(), 2) + Math.pow(unitVector.getY(), 2))), 4, BigDecimal.ROUND_HALF_UP);
+        BigDecimal xVector = new BigDecimal(unitVector.getX()).divide(new BigDecimal(Math.sqrt(Math.pow(unitVector.getX(), 2) + Math.pow(unitVector.getY(), 2))), 15, BigDecimal.ROUND_HALF_UP);
+        BigDecimal yVector = new BigDecimal(unitVector.getY()).divide(new BigDecimal(Math.sqrt(Math.pow(unitVector.getX(), 2) + Math.pow(unitVector.getY(), 2))), 15, BigDecimal.ROUND_HALF_UP);
 
         // 目标向量
         double xRealVector = realPoint.getX() - startPoint.getX();
@@ -107,18 +108,50 @@ public class PointUtils {
                 .add(new BigDecimal(yRealVector)
                         .multiply(new BigDecimal(xVector.doubleValue())
                                 .multiply(new BigDecimal(yVector.doubleValue()))))
-                .setScale(5, BigDecimal.ROUND_HALF_UP).add(new BigDecimal(startPoint.getX())).doubleValue();
+                .setScale(15, BigDecimal.ROUND_HALF_UP).add(new BigDecimal(startPoint.getX())).doubleValue();
         double y = new BigDecimal(xRealVector)
                 .multiply(new BigDecimal(xVector.doubleValue()))
                 .multiply(new BigDecimal(yVector.doubleValue()))
                 .add(new BigDecimal(yRealVector)
                         .multiply(new BigDecimal(yVector.doubleValue()).pow(2)))
-                .setScale(5, BigDecimal.ROUND_HALF_UP)
+                .setScale(15, BigDecimal.ROUND_HALF_UP)
                 .add(new BigDecimal(startPoint.getY())).doubleValue();
 
         return new Point2D.Double(x, y);
 
     }
 
+    /**
+     * 计算是否点是否在线上
+     *
+     * @param startPoint 起点
+     * @param endPoint   终点
+     * @param realPoint  监测点
+     * @return
+     */
+    public static Boolean pointLineRelationship(Point2D.Double startPoint, Point2D.Double endPoint, Point2D.Double realPoint) {
+
+        Boolean flag = false;
+
+        // StartEnd 向量
+        Point2D.Double v1 = new Point2D.Double(endPoint.getX() - startPoint.getX(), endPoint.getY() - startPoint.getY());
+        // RealStart 向量
+        Point2D.Double v2 = new Point2D.Double(realPoint.getX() - startPoint.getX(), realPoint.getY() - startPoint.getY());
+
+        //todo 向量叉乘得0 说明共线 ， 点积>0 说明同向 点积<0 说明反向
+        // v1 X v2
+        double crossProduct = new BigDecimal(Double.toString((v1.getX() * v2.getY() - v1.getY() * v2.getX()))).setScale(4, BigDecimal.ROUND_HALF_UP).doubleValue();
+        if (crossProduct == 0) {
+            double dotProduct = new BigDecimal(v1.getX()).multiply(new BigDecimal(v2.getX())).add(new BigDecimal(v1.getY()).multiply(new BigDecimal(v2.getY()))).setScale(5, BigDecimal.ROUND_HALF_UP).doubleValue();
+            if (dotProduct > 0) {
+                flag = true;
+            }
+        }
+
+        return flag;
+
+    }
+
 
 }
+

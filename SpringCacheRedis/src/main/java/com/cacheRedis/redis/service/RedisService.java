@@ -250,4 +250,9 @@ public class RedisService
     {
         redisTemplate.opsForValue().set(key,value,redisTemplate.opsForValue().getOperations().getExpire(key),TimeUnit.SECONDS);
     }
+
+    public void appendCacheObject(final String key, final String value)
+    {
+        redisTemplate.opsForValue().append(key,value);
+    }
 }
