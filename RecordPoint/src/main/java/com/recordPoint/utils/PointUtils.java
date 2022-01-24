@@ -50,7 +50,7 @@ public class PointUtils {
         }
         resultList.add(endPoint);
 
-        if (tempPoint!=null) {
+        if (tempPoint != null) {
             Collections.reverse(resultList);
         }
 
@@ -120,6 +120,7 @@ public class PointUtils {
         double xRealVector = realPoint.getX() - startPoint.getX();
         double yRealVector = realPoint.getY() - startPoint.getY();
 
+        // v*u(T)*u
         double x = new BigDecimal(xRealVector)
                 .multiply(new BigDecimal(xVector.doubleValue()).pow(2))
                 .add(new BigDecimal(yRealVector)
@@ -179,21 +180,27 @@ public class PointUtils {
         return tan > 0 ? sin : -sin;
     }
 
-    public static Point2D.Double findMonitorPoint(Point2D.Double point, List<Point2D.Double> monitorPointList, int low, int high, int Threshold) {
-
-        int middle = (low + high) / 2;
-
-        Point2D.Double target = monitorPointList.get(middle);
-        if (point.distance(target) > Threshold) {
-            if (point.getX() >= target.getX() && point.getY() >= target.getY()) {
-                findMonitorPoint(point, monitorPointList, middle + 1, high, Threshold);
-            } else {
-                findMonitorPoint(point, monitorPointList, low, middle - 1, Threshold);
+    /**
+     * 寻找最佳匹配监控点
+     *
+     * @param point            监测点位
+     * @param monitorPointList 监测点
+     * @param Threshold
+     * @return
+     */
+    public static Point2D.Double findMonitorPoint(Point2D.Double point, List<Point2D.Double> monitorPointList, int Threshold) {
+        List<Point2D.Double> collect = monitorPointList.parallelStream()
+                .filter(onePoint -> onePoint.getX() > (point.getX() - Threshold) && onePoint.getX() < (point.getX() + Threshold) && onePoint.getY() > (point.getY() - Threshold) && onePoint.getY() < (point.getY() + Threshold))
+                .collect(Collectors.toList());
+        double shortestDistance = Threshold;
+        Point2D.Double result = new Point2D.Double();
+        for (Point2D.Double onePoint : collect) {
+            if (onePoint.distance(point)<shortestDistance) {
+                result = onePoint;
             }
-        } else {
-            return target;
+            shortestDistance = onePoint.distance(point);
         }
-        return null;
+        return result;
     }
 
     /**

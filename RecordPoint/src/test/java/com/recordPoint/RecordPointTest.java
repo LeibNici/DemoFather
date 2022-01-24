@@ -7,6 +7,7 @@ import com.recordPoint.domain.RouteMonitoringPoints;
 import com.recordPoint.redis.service.RedisService;
 import com.recordPoint.utils.PointUtils;
 import lombok.Data;
+import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -22,6 +23,7 @@ import java.util.Map;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.FutureTask;
+import java.util.stream.Collectors;
 
 /**
  * @author chenming
@@ -29,6 +31,7 @@ import java.util.concurrent.FutureTask;
  * @create: 2022-01-21
  */
 @SpringBootTest
+@Slf4j
 public class RecordPointTest {
 
     private int spacing = 1;
@@ -161,14 +164,34 @@ public class RecordPointTest {
     @Test
     public void test7() {
         // 监测点
-        Point2D.Double point = new Point2D.Double(2333.0645772610064, 5318.034991439028);
+        List<Point2D.Double> pointList = new ArrayList<>();
+        for (int i = 0; i < 2000; i++) {
+            pointList.add(new Point2D.Double(2340.43077749824, 5657.278417943055 - 0.5 * i));
+        }
 
-        Point2D.Double startPoint = new Point2D.Double(2328.6945572151, 5652.370054894594);
-        Point2D.Double endPoint = new Point2D.Double(2328.6945572151, 4497.426799323973);
+        Point2D.Double startPoint = new Point2D.Double(2332.327865107768, 5657.290505716259);
+        Point2D.Double endPoint = new Point2D.Double(2332.667641813025, 4474.353966948051);
+        long start = System.currentTimeMillis();
         List<Point2D.Double> monitoringPoints = PointUtils.BasePoint(startPoint, endPoint, Thresold);
-        monitoringPoints.size();
-//        Point2D.Double monitorPoint = PointUtils.findMonitorPoint(point, monitoringPoints, 0, monitoringPoints.size(), 12);
-//        monitorPoint.toString();
-
+        log.info("拆分监测点耗时：{}ms", System.currentTimeMillis() - start);
+        List<Point2D.Double> result = new ArrayList<>();
+        long Mostart = System.currentTimeMillis();
+        pointList.forEach(point -> {
+            Point2D.Double monitorPoint = PointUtils.findMonitorPoint(point, monitoringPoints, Thresold);
+            result.add(monitorPoint);
+        });
+        log.info("查找监测点耗时：{}ms", System.currentTimeMillis() - Mostart);
+        List<Point2D.Double> collect = result.parallelStream().distinct().collect(Collectors.toList());
+        collect.forEach(s-> log.info(s.toString()));
+        log.info(String.valueOf(collect.size()));
     }
+
+    @Test
+    public void test8() {
+        Point2D.Double point = new Point2D.Double(2333.0645772610064, 5318.034991439028);
+        Point2D.Double aDouble = new Point2D.Double(2328.6945572151, 5313.426799323973);
+        double distance = point.distance(aDouble);
+        System.out.printf(String.valueOf(distance));
+    }
+
 }
