@@ -7,8 +7,8 @@
 #    type: com.alibaba.druid.pool.DruidDataSource
 
 mybatis-plus:
-  mapper-locations: classpath:/mapper/*Mapper.xml
-  type-aliases-package: com.cm.domain
+  mapper-locations: classpath:/com.SpringPoints.mapper/*Mapper.xml
+  type-aliases-package: com.cm.com.SpringPoints.domain
   configuration:
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
 

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE com.SpringPoints.mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-com.SpringPoints.mapper.dtd">
+<com.SpringPoints.mapper namespace="com.autoCreateTable.com.SpringPoints.mapper.TableCheckMapper">
+
+    <select id="showCreateSql" resultType="java.util.Map">
+        ${sql}
+    </select>
+</com.SpringPoints.mapper>

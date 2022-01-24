@@ -19,6 +19,8 @@
         <module>SpringTest2</module>
         <module>SpringUploadFile</module>
         <module>RecordPoint</module>
+        <module>SpringDruid</module>
+        <module>SpringPoints</module>
     </modules>
     <parent>
         <groupId>org.springframework.boot</groupId>

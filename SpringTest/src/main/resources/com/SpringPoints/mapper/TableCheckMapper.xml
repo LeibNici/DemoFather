@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<!DOCTYPE mapper
+<!DOCTYPE com.SpringPoints.mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
-        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.springtest.mapper.TableCheckMapper">
+        "http://mybatis.org/dtd/mybatis-3-com.SpringPoints.mapper.dtd">
+<com.SpringPoints.mapper namespace="com.springtest.com.SpringPoints.mapper.TableCheckMapper">
 
     <select id="tableCheck" resultType="java.lang.String">
         select TABLE_NAME
@@ -14,7 +14,7 @@
         ${sql}
     </update>
 
-    <select id="selectSql" parameterType="string" resultType="com.springtest.domain.BusCarOperation_11">
+    <select id="selectSql" parameterType="string" resultType="com.springtest.com.SpringPoints.domain.BusCarOperation_11">
         ${sql}
     </select>
 
@@ -22,4 +22,4 @@
         show create table ${tableName}
     </select>
 
-</mapper>
+</com.SpringPoints.mapper>

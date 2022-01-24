@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<!DOCTYPE mapper
+<!DOCTYPE com.SpringPoints.mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
-        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.springMybatisPlus.mapper.FatherMapper">
+        "http://mybatis.org/dtd/mybatis-3-com.SpringPoints.mapper.dtd">
+<com.SpringPoints.mapper namespace="com.springMybatisPlus.com.SpringPoints.mapper.FatherMapper">
 
-    <resultMap id="FatherResult" type="com.springMybatisPlus.domain.Father">
+    <resultMap id="FatherResult" type="com.springMybatisPlus.com.SpringPoints.domain.Father">
         <result property="id" column="id"/>
         <result property="father" column="father"/>
 
-        <collection property="childList" ofType="com.springMybatisPlus.domain.Child">
+        <collection property="childList" ofType="com.springMybatisPlus.com.SpringPoints.domain.Child">
             <result property="id" column="id"/>
             <result property="fatherId" column="father_id"/>
             <result property="name" column="name"/>
@@ -20,4 +20,4 @@
         SELECT * FROM t_father LEFT JOIN t_child ON t_father.id = t_child.father_id
     </select>
 
-</mapper>
+</com.SpringPoints.mapper>

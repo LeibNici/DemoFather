@@ -1,15 +1,14 @@
 package com.recordPoint.utils;
 
 import com.alibaba.druid.support.spring.stat.annotation.Stat;
+import org.springframework.context.annotation.Bean;
 import sun.util.resources.cldr.ig.CurrencyNames_ig;
 
 import java.awt.geom.Point2D;
 import java.math.BigDecimal;
 import java.math.BigInteger;
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * @author chenming
@@ -28,27 +27,45 @@ public class PointUtils {
      */
     public static List<Point2D.Double> BasePoint(Point2D.Double startPoint, Point2D.Double endPoint, int Threshold) {
         // 两点之间距离
-        Double distance = distance(startPoint, endPoint);
+        Double distance = startPoint.distance(endPoint);
         // 均分份数
         BigDecimal numberOfCopies = new BigDecimal(distance).divide(new BigDecimal(Threshold), BigDecimal.ROUND_HALF_UP);
 
-        // 初始化结果集
-        List<Point2D.Double> resultList = new LinkedList<>();
-        for (int i = 0; i < numberOfCopies.intValue(); i++) {
-
+        Point2D.Double tempPoint = null;
+        if (startPoint.getX() >= endPoint.getX() && startPoint.getY() > endPoint.getY()) {
+            tempPoint = startPoint;
+            startPoint = endPoint;
+            endPoint = tempPoint;
         }
+
+        // 初始化结果集
+        ArrayList<Point2D.Double> resultList = new ArrayList<>();
+        // 计算tan角度，防止重复计算
+        double tan = slope(startPoint, endPoint);
+        for (int i = 0; i < numberOfCopies.intValue(); i++) {
+            Point2D.Double onePoint = new Point2D.Double();
+            onePoint.x = startPoint.getX() + new BigDecimal(tan2cos(tan)).multiply(BigDecimal.valueOf(i)).multiply(BigDecimal.valueOf(Threshold)).doubleValue();
+            onePoint.y = startPoint.getY() + new BigDecimal(tan2sin(tan)).multiply(BigDecimal.valueOf(i)).multiply(BigDecimal.valueOf(Threshold)).doubleValue();
+            resultList.add(onePoint);
+        }
+        resultList.add(endPoint);
+
+        if (tempPoint!=null) {
+            Collections.reverse(resultList);
+        }
+
         return resultList;
     }
 
     /**
      * 计算两点之间距离
      *
-     * @param startPoint 起点
+     * @param startPoint 起点tantatttttttddd
      * @param endPoint   终点
      * @return 返回两点之间距离
      */
     public static Double distance(Point2D.Double startPoint, Point2D.Double endPoint) {
-        return Math.sqrt(Math.pow(endPoint.getX() - startPoint.getX(), 2) + Math.pow(endPoint.getY() - startPoint.getY(), 2));
+        return new BigDecimal(Math.sqrt(Math.pow(endPoint.getX() - startPoint.getX(), 2) + Math.pow(endPoint.getY() - startPoint.getY(), 2))).setScale(10, BigDecimal.ROUND_HALF_UP).doubleValue();
     }
 
     /**
@@ -65,7 +82,7 @@ public class PointUtils {
         }
         // 两点垂直
         else if (startPoint.getX() == endPoint.getX()) {
-            return 1D;
+            return Double.POSITIVE_INFINITY;
         }
         // 两点非水平垂直关系
         else {
@@ -152,6 +169,58 @@ public class PointUtils {
 
     }
 
+    public static Double tan2cos(Double tan) {
+        return Math.sqrt(1 / (1 + Math.pow(tan, 2)));
+    }
+
+    public static Double tan2sin(Double tan) {
+        double cos = Math.sqrt(1 / (1 + Math.pow(tan, 2)));
+        double sin = Math.sqrt(1 - Math.pow(cos, 2));
+        return tan > 0 ? sin : -sin;
+    }
+
+    public static Point2D.Double findMonitorPoint(Point2D.Double point, List<Point2D.Double> monitorPointList, int low, int high, int Threshold) {
+
+        int middle = (low + high) / 2;
+
+        Point2D.Double target = monitorPointList.get(middle);
+        if (point.distance(target) > Threshold) {
+            if (point.getX() >= target.getX() && point.getY() >= target.getY()) {
+                findMonitorPoint(point, monitorPointList, middle + 1, high, Threshold);
+            } else {
+                findMonitorPoint(point, monitorPointList, low, middle - 1, Threshold);
+            }
+        } else {
+            return target;
+        }
+        return null;
+    }
+
+    /**
+     * 使用递归的二分查找
+     *
+     * @param arr 有序数组
+     * @param key 待查找关键字
+     * @return 找到的位置
+     */
+    public static int recursionBinarySearch(int[] arr, int key, int low, int high) {
+
+        if (key < arr[low] || key > arr[high] || low > high) {
+            return -1;
+        }
+
+        int middle = (low + high) / 2;            //初始中间位置
+        if (arr[middle] > key) {
+            //比关键字大则关键字在左区域
+            return recursionBinarySearch(arr, key, low, middle - 1);
+        } else if (arr[middle] < key) {
+            //比关键字小则关键字在右区域
+            return recursionBinarySearch(arr, key, middle + 1, high);
+        } else {
+            return middle;
+        }
+
+    }
 
 }
 

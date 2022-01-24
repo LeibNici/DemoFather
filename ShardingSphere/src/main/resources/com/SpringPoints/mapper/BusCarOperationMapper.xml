@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<!DOCTYPE mapper
+<!DOCTYPE com.SpringPoints.mapper
 PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
-"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.shardingSphere.mapper.BusCarOperationMapper">
+"http://mybatis.org/dtd/mybatis-3-com.SpringPoints.mapper.dtd">
+<com.SpringPoints.mapper namespace="com.shardingSphere.com.SpringPoints.mapper.BusCarOperationMapper">
 
-    <resultMap type="com.shardingSphere.domain.BusCarOperation" id="BusCarOperationResult">
+    <resultMap type="com.shardingSphere.com.SpringPoints.domain.BusCarOperation" id="BusCarOperationResult">
         <result property="id"    column="id"    />
         <result property="siteX"    column="site_x"    />
         <result property="siteY"    column="site_y"    />
@@ -21,7 +21,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
                  left join bus_car_info bci on bci.car_num = bco.car_num
     </sql>
 
-    <insert id="insertBusCarOperation" parameterType="com.shardingSphere.domain.BusCarOperation">
+    <insert id="insertBusCarOperation" parameterType="com.shardingSphere.com.SpringPoints.domain.BusCarOperation">
         insert into bus_car_operation
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="id != null">id,</if>
@@ -38,4 +38,4 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </insert>
 
 
-</mapper>
+</com.SpringPoints.mapper>

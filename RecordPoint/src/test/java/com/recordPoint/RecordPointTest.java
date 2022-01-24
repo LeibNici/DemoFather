@@ -1,16 +1,24 @@
 package com.recordPoint;
 
+import com.recordPoint.Service.RouteMonitoringPointsServiceImpl;
+import com.recordPoint.Service.RouteServiceImpl;
+import com.recordPoint.domain.Route;
+import com.recordPoint.domain.RouteMonitoringPoints;
+import com.recordPoint.redis.service.RedisService;
 import com.recordPoint.utils.PointUtils;
 import lombok.Data;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.ui.context.Theme;
 
 import java.awt.*;
 import java.awt.geom.Point2D;
+import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.FutureTask;
@@ -24,7 +32,7 @@ import java.util.concurrent.FutureTask;
 public class RecordPointTest {
 
     private int spacing = 1;
-    private int Thresold = 1;
+    private int Thresold = 12;
 
     /**
      * 点位回归
@@ -45,25 +53,6 @@ public class RecordPointTest {
     @Test
     public void test2() {
 
-        List<Route> routeList = new ArrayList<>();
-        Route route1 = new Route();
-        route1.startPoint.setLocation(7780.687624317111, 6276.435397422331);
-        route1.endPoint.setLocation(6579.173021079166, 5371.787018467159);
-        routeList.add(route1);
-
-        Route route2 = new Route();
-        route2.startPoint.setLocation(6579.057884500161, 5371.787018467159);
-        route2.endPoint.setLocation(6430.653583819783, 5370.895430693774);
-        routeList.add(route2);
-
-        Point2D.Double real = new Point2D.Double(6659.917802107004, 5401.0134924270615);
-
-        routeList.forEach(route -> {
-            Point2D.Double mapPoint = PointUtils.mapPoint(route.getStartPoint(), route.getEndPoint(), real);
-            Boolean aBoolean = PointUtils.pointLineRelationship(route.getStartPoint(), route.getEndPoint(), mapPoint);
-            mapPoint.toString();
-        });
-
     }
 
     @Test
@@ -74,15 +63,6 @@ public class RecordPointTest {
         Point2D.Double mapPoint = PointUtils.mapPoint(startPoint, endPoint, real);
         Boolean aBoolean = PointUtils.pointLineRelationship(startPoint, endPoint, mapPoint);
         System.out.println(aBoolean);
-    }
-
-
-    @Data
-    private class Route {
-
-        private Point2D.Double startPoint = new Point2D.Double();
-        private Point2D.Double endPoint = new Point2D.Double();
-
     }
 
     @Data
@@ -129,6 +109,66 @@ public class RecordPointTest {
             System.out.println(ft.get());
             System.out.println(new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss:SSS'Z'").format(System.currentTimeMillis()));
         }
+    }
+
+    @Test
+    public void test4() {
+        Point2D.Double startPoint = new Point2D.Double(-1, 0);
+        Point2D.Double endPoint = new Point2D.Double(6, 0);
+        List<Point2D.Double> doubles = PointUtils.BasePoint(startPoint, endPoint, Thresold);
+        doubles.size();
+    }
+
+    @Autowired
+    private RouteServiceImpl routeService;
+    @Autowired
+    private RouteMonitoringPointsServiceImpl routeMonitoringPointsService;
+
+    @Test
+    public void test5() {
+        Point2D.Double startPoint = new Point2D.Double(2328.6945572151, 5652.370054894594);
+        Point2D.Double endPoint = new Point2D.Double(2328.6945572151, 4497.426799323973);
+        List<Point2D.Double> monitoringPoints = PointUtils.BasePoint(startPoint, endPoint, Thresold);
+        Route route = new Route();
+        route.setIdentifies(1);
+        route.setStartX(startPoint.getX());
+        route.setStartX(startPoint.getY());
+        route.setEndX(endPoint.getX());
+        route.setEndY(endPoint.getY());
+
+        List<RouteMonitoringPoints> list = new ArrayList<>();
+        monitoringPoints.forEach(point -> {
+            RouteMonitoringPoints routeMonitoringPoints = new RouteMonitoringPoints();
+            routeMonitoringPoints.setIdentifies(route.getIdentifies());
+            routeMonitoringPoints.setPointX(point.getX());
+            routeMonitoringPoints.setPointY(point.getY());
+            list.add(routeMonitoringPoints);
+        });
+
+        routeService.save(route);
+        routeMonitoringPointsService.saveBatch(list);
+
+    }
+
+    @Autowired
+    private RedisService redisService;
+
+    @Test
+    public void test6() {
+        redisService.setCacheObject("#MonitorPoint-1", routeMonitoringPointsService.list());
+    }
+
+    @Test
+    public void test7() {
+        // 监测点
+        Point2D.Double point = new Point2D.Double(2333.0645772610064, 5318.034991439028);
+
+        Point2D.Double startPoint = new Point2D.Double(2328.6945572151, 5652.370054894594);
+        Point2D.Double endPoint = new Point2D.Double(2328.6945572151, 4497.426799323973);
+        List<Point2D.Double> monitoringPoints = PointUtils.BasePoint(startPoint, endPoint, Thresold);
+        monitoringPoints.size();
+//        Point2D.Double monitorPoint = PointUtils.findMonitorPoint(point, monitoringPoints, 0, monitoringPoints.size(), 12);
+//        monitorPoint.toString();
 
     }
 }
