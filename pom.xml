@@ -21,6 +21,7 @@
         <module>RecordPoint</module>
         <module>SpringDruid</module>
         <module>SpringPoints</module>
+        <module>Leetcode</module>
     </modules>
     <parent>
         <groupId>org.springframework.boot</groupId>

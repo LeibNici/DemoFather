@@ -35,7 +35,7 @@ import java.util.stream.Collectors;
 public class RecordPointTest {
 
     private int spacing = 1;
-    private int Thresold = 12;
+    private int Thresold = 6;
 
     /**
      * 点位回归
@@ -165,8 +165,8 @@ public class RecordPointTest {
     public void test7() {
         // 监测点
         List<Point2D.Double> pointList = new ArrayList<>();
-        for (int i = 0; i < 2000; i++) {
-            pointList.add(new Point2D.Double(2340.43077749824, 5657.278417943055 - 0.5 * i));
+        for (int i = 0; i < 4000; i++) {
+            pointList.add(new Point2D.Double(2332.327865107768, 5657.278417943055 - 0.3 * i));
         }
 
         Point2D.Double startPoint = new Point2D.Double(2332.327865107768, 5657.290505716259);
@@ -182,8 +182,9 @@ public class RecordPointTest {
         });
         log.info("查找监测点耗时：{}ms", System.currentTimeMillis() - Mostart);
         List<Point2D.Double> collect = result.parallelStream().distinct().collect(Collectors.toList());
-        collect.forEach(s-> log.info(s.toString()));
+        collect.forEach(s -> log.info(s.toString()));
         log.info(String.valueOf(collect.size()));
+        log.info(String.valueOf(result.size()));
     }
 
     @Test
@@ -192,6 +193,23 @@ public class RecordPointTest {
         Point2D.Double aDouble = new Point2D.Double(2328.6945572151, 5313.426799323973);
         double distance = point.distance(aDouble);
         System.out.printf(String.valueOf(distance));
+    }
+
+    @Test
+    public void test10() {
+        Point2D.Double startPoint = new Point2D.Double(2332.327865107768, 5657.290505716259);
+        Point2D.Double endPoint = new Point2D.Double(2332.667641813025, 4474.353966948051);
+
+    }
+
+    @Test
+    public void test11() {
+        Point2D.Double startPoint = new Point2D.Double(1935.3574324372453, 4472.119319823549);
+        Point2D.Double endPoint = new Point2D.Double(2417.273803792798, 4471.462758009713);
+        List<Point2D.Double> doubles = PointUtils.BasePoint(startPoint, endPoint, Thresold);
+        doubles.size();
+
+
     }
 
 }

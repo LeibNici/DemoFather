@@ -4,6 +4,7 @@ import com.alibaba.druid.support.spring.stat.annotation.Stat;
 import org.springframework.context.annotation.Bean;
 import sun.util.resources.cldr.ig.CurrencyNames_ig;
 
+import java.awt.geom.Ellipse2D;
 import java.awt.geom.Point2D;
 import java.math.BigDecimal;
 import java.math.BigInteger;
@@ -109,6 +110,14 @@ public class PointUtils {
         return null;
     }
 
+    /**
+     * 计算目标点在线段上的映射点
+     *
+     * @param startPoint 起点
+     * @param endPoint   终点
+     * @param realPoint  目标点
+     * @return 返回目标点在指定线段上的映射点
+     */
     public static Point2D.Double mapPoint(Point2D.Double startPoint, Point2D.Double endPoint, Point2D.Double realPoint) {
 
         // 求单位向量
@@ -189,45 +198,18 @@ public class PointUtils {
      * @return
      */
     public static Point2D.Double findMonitorPoint(Point2D.Double point, List<Point2D.Double> monitorPointList, int Threshold) {
-        List<Point2D.Double> collect = monitorPointList.parallelStream()
+        List<Point2D.Double> collect = monitorPointList.stream()
                 .filter(onePoint -> onePoint.getX() > (point.getX() - Threshold) && onePoint.getX() < (point.getX() + Threshold) && onePoint.getY() > (point.getY() - Threshold) && onePoint.getY() < (point.getY() + Threshold))
                 .collect(Collectors.toList());
         double shortestDistance = Threshold;
         Point2D.Double result = new Point2D.Double();
         for (Point2D.Double onePoint : collect) {
-            if (onePoint.distance(point)<shortestDistance) {
+            if (onePoint.distance(point) < shortestDistance) {
                 result = onePoint;
             }
             shortestDistance = onePoint.distance(point);
         }
         return result;
     }
-
-    /**
-     * 使用递归的二分查找
-     *
-     * @param arr 有序数组
-     * @param key 待查找关键字
-     * @return 找到的位置
-     */
-    public static int recursionBinarySearch(int[] arr, int key, int low, int high) {
-
-        if (key < arr[low] || key > arr[high] || low > high) {
-            return -1;
-        }
-
-        int middle = (low + high) / 2;            //初始中间位置
-        if (arr[middle] > key) {
-            //比关键字大则关键字在左区域
-            return recursionBinarySearch(arr, key, low, middle - 1);
-        } else if (arr[middle] < key) {
-            //比关键字小则关键字在右区域
-            return recursionBinarySearch(arr, key, middle + 1, high);
-        } else {
-            return middle;
-        }
-
-    }
-
 }
 
