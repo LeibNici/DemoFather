@@ -1,14 +1,13 @@
 package com.recordPoint.utils;
 
-import com.alibaba.druid.support.spring.stat.annotation.Stat;
-import org.springframework.context.annotation.Bean;
-import sun.util.resources.cldr.ig.CurrencyNames_ig;
+import com.baomidou.mybatisplus.extension.plugins.inner.PaginationInnerInterceptor;
+import org.springframework.mail.javamail.MimeMessageHelper;
 
-import java.awt.geom.Ellipse2D;
 import java.awt.geom.Point2D;
 import java.math.BigDecimal;
-import java.math.BigInteger;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import java.util.stream.Collectors;
 
 /**
@@ -33,7 +32,7 @@ public class PointUtils {
         BigDecimal numberOfCopies = new BigDecimal(distance).divide(new BigDecimal(Threshold), BigDecimal.ROUND_HALF_UP);
 
         Point2D.Double tempPoint = null;
-        if (startPoint.getX() >= endPoint.getX() && startPoint.getY() > endPoint.getY()) {
+        if (startPoint.getX() >= endPoint.getX() && startPoint.getY() >= endPoint.getY()) {
             tempPoint = startPoint;
             startPoint = endPoint;
             endPoint = tempPoint;
@@ -61,7 +60,7 @@ public class PointUtils {
     /**
      * 计算两点之间距离
      *
-     * @param startPoint 起点tantatttttttddd
+     * @param startPoint 起点
      * @param endPoint   终点
      * @return 返回两点之间距离
      */
@@ -195,7 +194,8 @@ public class PointUtils {
      * @param point            监测点位
      * @param monitorPointList 监测点
      * @param Threshold
-     * @return
+     * @return 返回指定基础点位中的命中目标
+     * 时间复杂度 O(mn)
      */
     public static Point2D.Double findMonitorPoint(Point2D.Double point, List<Point2D.Double> monitorPointList, int Threshold) {
         List<Point2D.Double> collect = monitorPointList.stream()
@@ -210,6 +210,121 @@ public class PointUtils {
             shortestDistance = onePoint.distance(point);
         }
         return result;
+    }
+
+    /**
+     * 根据目标点的x轴坐标进行二分查找
+     *
+     * @param point            监测点位
+     * @param monitorPointList 监测点
+     * @param low
+     * @param high
+     * @param thresold
+     * @return 返回指定基础点位中的命中目标
+     * 问题：当thresold精度高的时候，命中目标失效；当精度低时命中速度极快
+     * 时间复杂度 O(log(mn))
+     */
+    public static Point2D.Double findMonitorPointByBinarySearch(Point2D.Double point, List<Point2D.Double> monitorPointList, int low, int high, int thresold) {
+        double targetX = point.getX();
+        double targetY = point.getY();
+
+//        List<Point2D.Double> tempMonitorPointList = new ArrayList<>();
+//        tempMonitorPointList = CopyUtils.deepCopy(monitorPointList);
+
+        int x_low, y_low;
+        x_low = y_low = low;
+
+        int x_high, y_high;
+        x_high = y_high = high;
+
+        double x_result, y_result;
+        x_result = y_result = -1;
+
+        //todo --------------------------------对x轴进行二分查找-------------------------------------------
+        while (x_low < x_high) {
+            if (monitorPointList.get(low).getX() > monitorPointList.get(high).getX()) {
+                Collections.reverse(monitorPointList);
+            }
+            int xmiddle = (x_low + x_high) / 2;
+            if (monitorPointList.get(xmiddle).getX() < targetX) {
+                x_low = xmiddle + 1;
+            } else if (monitorPointList.get(xmiddle).getX() > targetX) {
+                x_high = xmiddle - 1;
+            } else {
+                x_result = monitorPointList.get(xmiddle).getX();
+                break;
+            }
+        }
+
+        if (x_low >= x_high) {
+            double shortestDistance = thresold;
+            int x_leftRange = x_low - 2 < 0 ? 0 : x_low - 2;
+            int x_rightRange = x_high + 2 > high ? x_high : x_high + 2;
+            for (int i = x_leftRange; i <= x_rightRange; i++) {
+                double s = monitorPointList.get(i).distance(point);
+                if (monitorPointList.get(i).distance(point) < shortestDistance) {
+                    x_result = monitorPointList.get(i).getX();
+                    shortestDistance = monitorPointList.get(i).distance(point);
+                }
+            }
+        }
+
+        //todo --------------------------------对y轴进行二分查找-------------------------------------------
+        while (y_low < y_high) {
+            if (monitorPointList.get(low).getY() > monitorPointList.get(high).getY()) {
+                Collections.reverse(monitorPointList);
+            }
+            int ymiddle = (y_low + y_high) / 2;
+            if (monitorPointList.get(ymiddle).getY() < targetY) {
+                y_low = ymiddle + 1;
+            } else if (monitorPointList.get(ymiddle).getY() > targetY) {
+                y_high = ymiddle - 1;
+            } else {
+                y_result = monitorPointList.get(ymiddle).getY();
+                break;
+            }
+        }
+
+        if (y_low >= y_high) {
+            double shortestDistance = thresold;
+            int y_downRange = y_low - 1 < 0 ? 0 : y_low - 1;
+            int y_upRange = y_high + 1 > high ? y_high : y_high + 1;
+            for (int i = y_downRange; i <= y_upRange; i++) {
+                if (monitorPointList.get(i).distance(point) < shortestDistance) {
+                    y_result = monitorPointList.get(i).getY();
+                    shortestDistance = monitorPointList.get(i).distance(point);
+                }
+            }
+        }
+
+        if (x_result==-1 || y_result==-1){
+            return new Point2D.Double(0,0);
+        }else {
+            return new Point2D.Double(x_result, y_result);
+        }
+    }
+
+    /**
+     * 判断是否在以起点和终点构成的圆内
+     *
+     * @param point      目标点
+     * @param startPoint 起点
+     * @param endPoint   终点
+     * @return
+     */
+    public static Boolean isInsideCircle(Point2D.Double point, Point2D.Double startPoint, Point2D.Double endPoint) {
+
+        double circle_x = new BigDecimal(endPoint.getX()).add(BigDecimal.valueOf(startPoint.getX())).divide(BigDecimal.valueOf(2)).setScale(5, BigDecimal.ROUND_HALF_UP).doubleValue();
+        double circle_y = new BigDecimal(endPoint.getY()).add(BigDecimal.valueOf(startPoint.getY())).divide(BigDecimal.valueOf(2)).setScale(5, BigDecimal.ROUND_HALF_UP).doubleValue();
+
+        Point2D.Double circle = new Point2D.Double(circle_x, circle_y);
+        double circle2point = circle.distance(point);
+        double radius = startPoint.distance(endPoint) / 2;
+        if (circle.distance(point) <= startPoint.distance(endPoint) / 2) {
+            return true;
+        } else {
+            return false;
+        }
     }
 }
 

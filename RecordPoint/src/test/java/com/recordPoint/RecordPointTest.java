@@ -8,9 +8,11 @@ import com.recordPoint.redis.service.RedisService;
 import com.recordPoint.utils.PointUtils;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
+import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.annotation.Repeat;
 import org.springframework.ui.context.Theme;
 
 import java.awt.*;
@@ -35,7 +37,7 @@ import java.util.stream.Collectors;
 public class RecordPointTest {
 
     private int spacing = 1;
-    private int Thresold = 6;
+    private int Thresold = 12;
 
     /**
      * 点位回归
@@ -162,11 +164,13 @@ public class RecordPointTest {
     }
 
     @Test
+    @RepeatedTest(10)
     public void test7() {
+        log.info("--------------------------------------------------------------------------------------");
         // 监测点
         List<Point2D.Double> pointList = new ArrayList<>();
-        for (int i = 0; i < 4000; i++) {
-            pointList.add(new Point2D.Double(2332.327865107768, 5657.278417943055 - 0.3 * i));
+        for (int i = 0; i < 10000; i++) {
+            pointList.add(new Point2D.Double(2332.327865107768, 5657.278417943055 - 0.1 * i));
         }
 
         Point2D.Double startPoint = new Point2D.Double(2332.327865107768, 5657.290505716259);
@@ -174,17 +178,28 @@ public class RecordPointTest {
         long start = System.currentTimeMillis();
         List<Point2D.Double> monitoringPoints = PointUtils.BasePoint(startPoint, endPoint, Thresold);
         log.info("拆分监测点耗时：{}ms", System.currentTimeMillis() - start);
+
         List<Point2D.Double> result = new ArrayList<>();
         long Mostart = System.currentTimeMillis();
         pointList.forEach(point -> {
             Point2D.Double monitorPoint = PointUtils.findMonitorPoint(point, monitoringPoints, Thresold);
             result.add(monitorPoint);
         });
-        log.info("查找监测点耗时：{}ms", System.currentTimeMillis() - Mostart);
-        List<Point2D.Double> collect = result.parallelStream().distinct().collect(Collectors.toList());
-        collect.forEach(s -> log.info(s.toString()));
-        log.info(String.valueOf(collect.size()));
-        log.info(String.valueOf(result.size()));
+        log.info("查找列表监测点耗时：{}ms", System.currentTimeMillis() - Mostart);
+
+        List<Point2D.Double> BinarySearchresult = new ArrayList<>();
+        long BinarySearch = System.currentTimeMillis();
+        pointList.forEach(point -> {
+            Point2D.Double monitorPoint = PointUtils.findMonitorPointByBinarySearch(point, monitoringPoints, 0, monitoringPoints.size() - 1, Thresold);
+            BinarySearchresult.add(monitorPoint);
+        });
+        log.info("查找二分监测点耗时：{}ms", System.currentTimeMillis() - BinarySearch);
+
+        for (int i = 0; i < 50; i++) {
+            log.info("-------分割线-------");
+            log.info("原始点位：{}  列表监测点：{}  二分监测点；{}", pointList.get(i).toString(), result.get(i).toString(), BinarySearchresult.get(i).toString());
+            log.info("原始点位距离列表检测点：{}，原始点位距离二分监测点：{}", result.get(i).distance(pointList.get(i)), BinarySearchresult.get(i).distance(pointList.get(i)));
+        }
     }
 
     @Test
@@ -208,8 +223,26 @@ public class RecordPointTest {
         Point2D.Double endPoint = new Point2D.Double(2417.273803792798, 4471.462758009713);
         List<Point2D.Double> doubles = PointUtils.BasePoint(startPoint, endPoint, Thresold);
         doubles.size();
+    }
 
+    @Test
+    public void test12() {
+        Point2D.Double startPoint = new Point2D.Double(0, 0);
+        Point2D.Double endPoint = new Point2D.Double(5, 0);
+        List<Point2D.Double> doubles = PointUtils.BasePoint(startPoint, endPoint, 1);
+        Point2D.Double targetPoint = new Point2D.Double(3, 0);
+        Point2D.Double monitorPointByBinarySearch = PointUtils.findMonitorPointByBinarySearch(targetPoint, doubles, 0, doubles.size() - 1, 1);
+        doubles.size();
+    }
 
+    @Test
+    public void test13() {
+        Point2D.Double startPoint = new Point2D.Double(5, 5);
+        Point2D.Double endPoint = new Point2D.Double(0, 0);
+
+        Point2D.Double targetPoint = new Point2D.Double(5, 4.8);
+        List<Point2D.Double> doubles = PointUtils.BasePoint(startPoint, endPoint, 1);
+        log.info(PointUtils.findMonitorPointByBinarySearch(targetPoint, doubles, 0, doubles.size() - 1, 1).toString());
     }
 
 }
