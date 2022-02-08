@@ -56,4 +56,10 @@ public class mainTest {
         s.in("id",ids);
     }
 
+    @Test
+    public void test3(){
+        UpdateWrapper<Child> s = new UpdateWrapper<>();
+        s.in("id","1").set("name",0).set("age",0);
+        childService.update(s);
+    }
 }

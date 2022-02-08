@@ -1,8 +1,5 @@
 package com.recordPoint.utils;
 
-import com.baomidou.mybatisplus.extension.plugins.inner.PaginationInnerInterceptor;
-import org.springframework.mail.javamail.MimeMessageHelper;
-
 import java.awt.geom.Point2D;
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -228,9 +225,6 @@ public class PointUtils {
         double targetX = point.getX();
         double targetY = point.getY();
 
-//        List<Point2D.Double> tempMonitorPointList = new ArrayList<>();
-//        tempMonitorPointList = CopyUtils.deepCopy(monitorPointList);
-
         int x_low, y_low;
         x_low = y_low = low;
 
@@ -297,9 +291,9 @@ public class PointUtils {
             }
         }
 
-        if (x_result==-1 || y_result==-1){
-            return new Point2D.Double(0,0);
-        }else {
+        if (x_result == -1 || y_result == -1) {
+            return new Point2D.Double(0, 0);
+        } else {
             return new Point2D.Double(x_result, y_result);
         }
     }

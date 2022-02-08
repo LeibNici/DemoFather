@@ -23,6 +23,7 @@
         <module>SpringPoints</module>
         <module>Leetcode</module>
         <module>SpringDynamicYml</module>
+        <module>SpringDataBaseBak</module>
     </modules>
     <parent>
         <groupId>org.springframework.boot</groupId>
