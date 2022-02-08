@@ -1,6 +1,6 @@
 package com.SpringDataBaseBak.task;
 
-import com.SpringDataBaseBak.domain.InCludeDataBase;
+import com.SpringDataBaseBak.domain.DataBaseBakConfig;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -16,11 +16,11 @@ import org.springframework.stereotype.Component;
 public class DataBakTask {
 
     @Autowired
-    private InCludeDataBase inCludeDataBase;
+    private DataBaseBakConfig dataBaseBakConfig;
 
     @Scheduled(fixedRate = 10000)
     public void BakTask(){
-      log.info(inCludeDataBase.getMysqlPath());
+      log.info(dataBaseBakConfig.getMysqlPath());
     }
 
 }

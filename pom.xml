@@ -46,6 +46,7 @@
         <mybatis-plus-boot-starter.version>3.4.3.4</mybatis-plus-boot-starter.version>
         <druid.version>1.2.8</druid.version>
         <jedis.version>4.0.1</jedis.version>
+        <guovo.version>31.0.1-jre</guovo.version>
     </properties>
 
     <dependencyManagement>
@@ -136,6 +137,14 @@
                 <artifactId>jedis</artifactId>
                 <version>${jedis.version}</version>
             </dependency>
+
+            <!-- https://mvnrepository.com/artifact/com.google.guava/guava -->
+            <dependency>
+                <groupId>com.google.guava</groupId>
+                <artifactId>guava</artifactId>
+                <version>${guovo.version}</version>
+            </dependency>
+
 
         </dependencies>
 

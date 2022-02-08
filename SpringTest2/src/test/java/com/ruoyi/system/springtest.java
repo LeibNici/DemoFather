@@ -61,4 +61,9 @@ public class springtest {
         redisService.setCacheList("web:carOperationList", a);
     }
 
+    @Test
+    public void os(){
+
+    }
+
 }
