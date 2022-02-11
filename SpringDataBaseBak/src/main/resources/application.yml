@@ -8,12 +8,26 @@ spring:
 
 database:
   backup:
-    mysqlPath: D:\Program Files\MySQL\MySQL Server 8.0\bin
+    ## mysql home
+    mysql-path: D:\Program Files (x86)\mysql-8.0.26-winx64\bin
+    ## mysql 目标host
+    target-host: 127.0.0.1
+    ## mysql 目标username
+    target-username: root
+    ## mysql 目标password
+    target-password: 123456
+    ## 备份时间周期
+    schedule-cron: 0 0 12 * * ?
+    ## 备份文件保留时间(覆盖替换)
+    keep-time:
+    ## baklist中的 是排除还是包括
     include: true
-    bakList:
+    ## 备份列表
+    bak-list:
       - fzys
       - uwb
-    filePath: D:\tmp
+    ## sql保存路径
+    file-path: D:\tmp
 
 mybatis-plus:
   configuration:

@@ -24,6 +24,7 @@
         <module>Leetcode</module>
         <module>SpringDynamicYml</module>
         <module>SpringDataBaseBak</module>
+        <module>SpringWebSocket</module>
     </modules>
     <parent>
         <groupId>org.springframework.boot</groupId>
