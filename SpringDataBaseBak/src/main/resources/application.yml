@@ -25,7 +25,7 @@ database:
     ## 备份列表
     bak-list:
       - fzys
-      - uwb
+      - uwb_loc
     ## sql保存路径
     file-path: D:\tmp
 
