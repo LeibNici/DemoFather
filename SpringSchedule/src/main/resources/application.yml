@@ -1,0 +1,15 @@
+spring:
+  task:
+    scheduling:
+      pool:
+        size: 5
+      thread-name-prefix: Schedule-Task-
+    execution:
+      pool:
+        core-size: 5
+        max-size: 7
+        queue-capacity: 99999
+        keep-alive: 60s
+        allow-core-thread-timeout: true
+      thread-name-prefix: Execution-Task-
+

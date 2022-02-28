@@ -1,18 +1,17 @@
-package com.ThreadPool;
+package com.springAspect;
 
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.scheduling.annotation.EnableAsync;
 
 /**
  * @author chenming
  * @description
- * @create: 2022-02-11
+ * @create: 2022-02-18
  */
 @SpringBootApplication
-@EnableAsync
-public class ThreadPoolApplication {
+public class AspectApplication {
     public static void main(String[] args) {
-        SpringApplication.run(ThreadPoolApplication.class);
+        SpringApplication.run(AspectApplication.class);
     }
 }

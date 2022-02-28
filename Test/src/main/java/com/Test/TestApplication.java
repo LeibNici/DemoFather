@@ -1,18 +1,18 @@
-package com.ThreadPool;
+package com.Test;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.scheduling.annotation.EnableAsync;
 
 /**
  * @author chenming
  * @description
- * @create: 2022-02-11
+ * @create: 2022-02-28
  */
 @SpringBootApplication
-@EnableAsync
-public class ThreadPoolApplication {
+public class TestApplication {
+
     public static void main(String[] args) {
-        SpringApplication.run(ThreadPoolApplication.class);
+        SpringApplication.run(TestApplication.class);
     }
+
 }

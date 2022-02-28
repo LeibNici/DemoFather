@@ -1,5 +1,6 @@
 package com.ruoyi.system;
 
+import cn.hutool.core.util.StrUtil;
 import com.alibaba.fastjson.JSON;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.ruoyi.system.domain.RemotePoint;
@@ -62,7 +63,29 @@ public class springtest {
     }
 
     @Test
-    public void os(){
+    public void os() {
+        char s = '0';
+        String sd = "123";
+
+        System.out.println(sd.length() < 3 ? sd = StrUtil.fillBefore(sd, s, 3) : sd);
+    }
+
+    @Test
+    public void sdd() {
+        List<String> sd = new ArrayList<>();
+        sd.add("1");
+        sd.add("2");
+        sd.add("3");
+
+        String s1 = "";
+        try {
+            s1 = sd.stream().filter(s -> s.equals("22")).findAny().get();
+        } catch (Exception e) {
+            s1 = "ds";
+        }
+
+        System.out.println(s1);
+
 
     }
 

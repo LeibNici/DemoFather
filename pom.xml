@@ -5,13 +5,11 @@
     <packaging>pom</packaging>
     <modules>
         <module>SpringStartupSequence</module>
-        <module>SpringDynamicRedis</module>
         <module>ObjectEqualsAndHashcode</module>
         <module>SpringMycat</module>
         <module>SpringSharding</module>
         <module>ShardingSphere</module>
         <module>SpringActivities</module>
-        <module>SpringCacheRedis</module>
         <module>SpringMybatisPlus</module>
         <module>AutoCreateTable</module>
         <module>SpringTest</module>
@@ -26,6 +24,9 @@
         <module>SpringDataBaseBak</module>
         <module>SpringWebSocket</module>
         <module>SpringThreadPool</module>
+        <module>SpringSchedule</module>
+        <module>SpringAspect</module>
+        <module>Test</module>
     </modules>
     <parent>
         <groupId>org.springframework.boot</groupId>
