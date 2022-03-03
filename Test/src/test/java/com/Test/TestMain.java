@@ -7,7 +7,10 @@ import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import javax.swing.plaf.nimbus.NimbusLookAndFeel;
 import java.io.*;
+import java.net.HttpURLConnection;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -26,9 +29,40 @@ public class TestMain {
         String json = readJsonFile(file);
         Map<String, Object> jsonObject = JSON.parseObject(json);
         List<Map<String, Object>> messages = (List<Map<String, Object>>) jsonObject.get("messages");
+        JSONArray jsonArray = new JSONArray();
         for (Map<String, Object> message : messages) {
-            log.info(String.valueOf(message.get("payload")));
+            Map<String, Object> payload = JSON.parseObject((String) message.get("payload"));
+            payload.replace("timestamp", String.valueOf(System.currentTimeMillis()).substring(0, 10));
+            jsonArray.add(payload);
         }
+        try {
+            saveJsonFile(JSON.toJSONString(jsonArray), "D:\\2.json");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Test
+    public void test2() throws IOException {
+
+        saveJsonFile("123", "D:\\1.json");
+    }
+
+    public void saveJsonFile(String message, String path) throws IOException {
+        File file = new File(path);
+        if (!file.exists()) {
+            file.createNewFile();
+        }
+
+        FileOutputStream fileOutputStream = new FileOutputStream(file);
+        OutputStreamWriter outputStreamWriter = new OutputStreamWriter(fileOutputStream, "UTF-8");
+        BufferedWriter bufferedWriter = new BufferedWriter(outputStreamWriter);
+
+        bufferedWriter.write(message);
+
+        bufferedWriter.flush();
+        bufferedWriter.close();
+
     }
 
     public String readJsonFile(File jsonFile) {

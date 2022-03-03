@@ -27,6 +27,7 @@
         <module>SpringSchedule</module>
         <module>SpringAspect</module>
         <module>Test</module>
+        <module>SpringRedisson</module>
     </modules>
     <parent>
         <groupId>org.springframework.boot</groupId>
