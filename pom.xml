@@ -28,6 +28,7 @@
         <module>SpringAspect</module>
         <module>Test</module>
         <module>SpringRedisson</module>
+        <module>SpringMQ-P</module>
     </modules>
     <parent>
         <groupId>org.springframework.boot</groupId>
@@ -182,6 +183,7 @@
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
+                <version>${spring.version}</version>
                 <configuration>
                     <excludes>
                         <exclude>
