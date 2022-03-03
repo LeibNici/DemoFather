@@ -21,9 +21,9 @@ public class ProviderTask {
 
     @PostConstruct
     public void init(){
-//        amqpAdmin.declareQueue(new Queue("my-queue"));
-//        amqpAdmin.declareExchange(new DirectExchange("my-exchange"));
-        amqpAdmin.declareBinding(BindingBuilder.bind(new Queue("my-queue")).to(new DirectExchange("my-exchange")).with("my-route"));
+        amqpAdmin.declareQueue(new Queue("my-queue"));
+        amqpAdmin.declareExchange(new DirectExchange("my-exchange"));
+        amqpAdmin.declareBinding(new Binding("my-queue", Binding.DestinationType.QUEUE,"my-exchange","my-route",null));
     }
 
     @Scheduled(fixedDelay = 1000)
