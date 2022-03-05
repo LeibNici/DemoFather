@@ -29,6 +29,7 @@
         <module>Test</module>
         <module>SpringRedisson</module>
         <module>SpringMQ-P</module>
+        <module>SpringMQ-C</module>
     </modules>
     <parent>
         <groupId>org.springframework.boot</groupId>

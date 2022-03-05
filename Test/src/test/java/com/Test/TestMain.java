@@ -1,18 +1,23 @@
 package com.Test;
 
+import com.Test.test.Person;
+import com.Test.test.PingUtils;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import lombok.extern.slf4j.Slf4j;
+import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import javax.swing.plaf.nimbus.NimbusLookAndFeel;
 import java.io.*;
+import java.math.BigDecimal;
 import java.net.HttpURLConnection;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+import java.util.concurrent.Executor;
+import java.util.concurrent.Executors;
+import java.util.stream.Collectors;
 
 /**
  * @author chenming
@@ -84,5 +89,36 @@ public class TestMain {
             return null;
         }
     }
+
+    private final static Executor executor = Executors.newCachedThreadPool();//启用多线程
+
+    @Test
+//    @RepeatedTest(10)
+    public void test3() throws InterruptedException {
+
+        List<Map<String, Object>> result = new ArrayList<>();
+
+        for (int i = 1; i < 255; i++) {
+            int finalI = i;
+            executor.execute(new Runnable() {
+                @Override
+                public void run() {
+                    String s = "10.229.36." + finalI;
+                    Map<String, String> win = PingUtils.getNetworkStatusByPing("win", "ping " + s + " -n 1 -w 1000");
+
+                    HashMap<String, Object> objectObjectHashMap = new HashMap<>();
+                    objectObjectHashMap.put("ip", finalI);
+                    objectObjectHashMap.put("delay", win.get("delay"));
+                    result.add(objectObjectHashMap);
+                }
+            });
+
+        }
+
+        List<Map<String, Object>> collect = result.stream().sorted((h1, h2) -> (new BigDecimal(h2.get("ip").toString())).compareTo(new BigDecimal(h1.get("ip").toString()))).collect(Collectors.toList());
+        collect.forEach(stringObjectMap -> System.out.println(stringObjectMap.get("ip")));
+        log.info(String.valueOf(result.size()));
+    }
+
 
 }

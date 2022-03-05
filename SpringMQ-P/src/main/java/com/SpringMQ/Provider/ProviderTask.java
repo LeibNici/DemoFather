@@ -1,34 +1,22 @@
 package com.SpringMQ.Provider;
 
-import org.springframework.amqp.core.*;
-import org.springframework.amqp.rabbit.core.RabbitAdmin;
-import org.springframework.amqp.rabbit.core.RabbitTemplate;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.SpringMQ.config.MQconfig;
+import com.SpringMQ.config.Sender;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
-import javax.annotation.PostConstruct;
-import java.nio.channels.Pipe;
-
 @Component
+@Slf4j
 public class ProviderTask {
 
-    @Autowired
-    private AmqpAdmin amqpAdmin;
-
-    @Autowired
-    private RabbitTemplate rabbitTemplate;
-
-    @PostConstruct
-    public void init(){
-        amqpAdmin.declareQueue(new Queue("my-queue"));
-        amqpAdmin.declareExchange(new DirectExchange("my-exchange"));
-        amqpAdmin.declareBinding(new Binding("my-queue", Binding.DestinationType.QUEUE,"my-exchange","my-route",null));
-    }
-
     @Scheduled(fixedDelay = 1000)
-    public void tssk(){
-        rabbitTemplate.convertAndSend("myroute","123");
+    public void tssk() {
+        log.info("发送消息");
+
+        for (int i = 0; i < 3; i++) {
+            Sender.sendMsg(MQconfig.MY_ECXCHANGE, "my.route." + i, i);
+        }
     }
 
 }
