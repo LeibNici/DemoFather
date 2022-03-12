@@ -330,7 +330,7 @@ public class PointUtils {
      * @param width      区域宽度
      * @return 返回以起点为首 4个区域集合
      */
-    public List<Point2D.Double> createRegion(Point2D.Double startPoint, Point2D.Double endPoint, Double width) {
+    public static List<Point2D.Double> createRegion(Point2D.Double startPoint, Point2D.Double endPoint, Double width) {
 
         Double tanα = slope(startPoint, endPoint);
         Double cosα = tan2cos(tanα);
@@ -347,7 +347,7 @@ public class PointUtils {
         list.add(new Point2D.Double(endPoint.getX() + line_3, endPoint.getY() - line_2));
 
 
-        return new ArrayList<>();
+        return list;
     }
 
 }

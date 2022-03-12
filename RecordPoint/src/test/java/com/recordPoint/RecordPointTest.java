@@ -272,4 +272,15 @@ public class RecordPointTest {
         log.info("1");
     }
 
+    @Test
+    void test14(){
+        Point2D.Double startPoint = new Point2D.Double(37395645.82259154, 4267471.2876309715);
+        Point2D.Double endPoint = new Point2D.Double(37395680.109330304, 4267505.621229051);
+
+        System.out.println(startPoint.distance(endPoint));
+
+        List<Point2D.Double> region = PointUtils.createRegion(startPoint, endPoint, Double.valueOf(8));
+        region.size();
+    }
+
 }
