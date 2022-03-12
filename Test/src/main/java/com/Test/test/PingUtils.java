@@ -18,13 +18,22 @@ import java.util.Map;
 @Slf4j
 public class PingUtils {
 
+    private static int pingnum = 1;
+    private static int timeout = 1000;
+
+
+    public static Map<String, String> getNetworkStatusByPing(String os, String cmd) {
+        return getNetworkStatusByPing(os, cmd, pingnum, timeout);
+    }
+
+
     /**
      * 通过ip获取信息,loss:丢包率，delay:延时
      *
      * @param cmd
      * @return
      */
-    public static Map<String, String> getNetworkStatusByPing(String os, String cmd) {
+    public static Map<String, String> getNetworkStatusByPing(String os, String cmd, int pingNum, int timeout) {
         Map<String, String> networkMap = new HashMap<>(3);
         //获取当前进程运行对象
         Runtime runtime = Runtime.getRuntime();

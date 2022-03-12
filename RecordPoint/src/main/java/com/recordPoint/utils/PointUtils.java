@@ -4,6 +4,7 @@ import java.awt.geom.Point2D;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -66,7 +67,7 @@ public class PointUtils {
     }
 
     /**
-     * 计算两点之间斜率
+     * 计算两点之间斜率 tanα
      *
      * @param startPoint 起点
      * @param endPoint   终点
@@ -320,5 +321,34 @@ public class PointUtils {
             return false;
         }
     }
+
+    /**
+     * 创建依据起点终点画出指定区域
+     *
+     * @param startPoint 起点
+     * @param endPoint   终点
+     * @param width      区域宽度
+     * @return 返回以起点为首 4个区域集合
+     */
+    public List<Point2D.Double> createRegion(Point2D.Double startPoint, Point2D.Double endPoint, Double width) {
+
+        Double tanα = slope(startPoint, endPoint);
+        Double cosα = tan2cos(tanα);
+        Double sinα = tan2sin(tanα);
+
+        Double line_1 = width / 2;
+        Double line_2 = line_1 * cosα;
+        Double line_3 = line_1 * sinα;
+
+        List<Point2D.Double> list = new ArrayList<>();
+        list.add(new Point2D.Double(startPoint.getX() + line_3, startPoint.getY() - line_2));
+        list.add(new Point2D.Double(startPoint.getX() - line_3, startPoint.getY() + line_2));
+        list.add(new Point2D.Double(endPoint.getX() - line_3, endPoint.getY() + line_2));
+        list.add(new Point2D.Double(endPoint.getX() + line_3, endPoint.getY() - line_2));
+
+
+        return new ArrayList<>();
+    }
+
 }
 

@@ -20,6 +20,7 @@ import java.awt.geom.Point2D;
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.Callable;
@@ -131,13 +132,13 @@ public class RecordPointTest {
 
     @Test
     public void test5() {
-        Point2D.Double startPoint = new Point2D.Double(2328.6945572151, 5652.370054894594);
-        Point2D.Double endPoint = new Point2D.Double(2328.6945572151, 4497.426799323973);
+        Point2D.Double startPoint = new Point2D.Double(2893.3231421987925, 5372.598529600007);
+        Point2D.Double endPoint = new Point2D.Double(1216.4912828965712, 6420.3722203905845);
         List<Point2D.Double> monitoringPoints = PointUtils.BasePoint(startPoint, endPoint, Thresold);
         Route route = new Route();
-        route.setIdentifies(1);
+        route.setIdentifies(3);
         route.setStartX(startPoint.getX());
-        route.setStartX(startPoint.getY());
+        route.setStartY(startPoint.getY());
         route.setEndX(endPoint.getX());
         route.setEndY(endPoint.getY());
 
@@ -237,12 +238,38 @@ public class RecordPointTest {
 
     @Test
     public void test13() {
-        Point2D.Double startPoint = new Point2D.Double(5, 5);
+        Point2D.Double startPoint = new Point2D.Double(2, 2);
         Point2D.Double endPoint = new Point2D.Double(0, 0);
 
-        Point2D.Double targetPoint = new Point2D.Double(5, 4.8);
-        List<Point2D.Double> doubles = PointUtils.BasePoint(startPoint, endPoint, 1);
-        log.info(PointUtils.findMonitorPointByBinarySearch(targetPoint, doubles, 0, doubles.size() - 1, 1).toString());
+        int line_1 = 1;
+
+        Double tanα = PointUtils.slope(startPoint, endPoint);
+        Double cosα = PointUtils.tan2cos(tanα);
+        Double sinα = PointUtils.tan2sin(tanα);
+
+        Double line_2 = line_1 * cosα;
+        Double line_3 = line_1 * sinα;
+
+        Double point1_X = startPoint.getX() + line_3;
+        Double point1_Y = startPoint.getY() - line_2;
+
+        Double point2_X = startPoint.getX() - line_3;
+        Double point2_Y = startPoint.getY() + line_2;
+
+        Double point3_X = endPoint.getX() - line_3;
+        Double point3_Y = endPoint.getY() + line_2;
+
+        Double point4_X = endPoint.getX() + line_3;
+        Double point4_Y = endPoint.getY() - line_2;
+
+        List<Point2D.Double> list = new ArrayList<>();
+        list.add(new Point2D.Double(point1_X, point1_Y));
+        list.add(new Point2D.Double(point2_X, point2_Y));
+        list.add(new Point2D.Double(point3_X, point3_Y));
+        list.add(new Point2D.Double(point4_X, point4_Y));
+
+
+        log.info("1");
     }
 
 }

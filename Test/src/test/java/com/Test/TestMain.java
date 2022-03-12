@@ -6,6 +6,8 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.math3.stat.StatUtils;
+import org.apache.commons.math3.stat.descriptive.moment.StandardDeviation;
 import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -14,9 +16,12 @@ import javax.swing.plaf.nimbus.NimbusLookAndFeel;
 import java.io.*;
 import java.math.BigDecimal;
 import java.net.HttpURLConnection;
+import java.net.Inet4Address;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
+import java.text.SimpleDateFormat;
 import java.util.*;
-import java.util.concurrent.Executor;
-import java.util.concurrent.Executors;
+import java.util.concurrent.*;
 import java.util.stream.Collectors;
 
 /**
@@ -93,10 +98,10 @@ public class TestMain {
     private final static Executor executor = Executors.newCachedThreadPool();//启用多线程
 
     @Test
-//    @RepeatedTest(10)
     public void test3() throws InterruptedException {
 
         List<Map<String, Object>> result = new ArrayList<>();
+        CountDownLatch latch = new CountDownLatch(100);
 
         for (int i = 1; i < 255; i++) {
             int finalI = i;
@@ -104,7 +109,7 @@ public class TestMain {
                 @Override
                 public void run() {
                     String s = "10.229.36." + finalI;
-                    Map<String, String> win = PingUtils.getNetworkStatusByPing("win", "ping " + s + " -n 1 -w 1000");
+                    Map<String, String> win = PingUtils.getNetworkStatusByPing("win", "ping " + s + " -n 1 -w 99999");
 
                     HashMap<String, Object> objectObjectHashMap = new HashMap<>();
                     objectObjectHashMap.put("ip", finalI);
@@ -121,4 +126,175 @@ public class TestMain {
     }
 
 
+    @Test
+    public void test4() throws InterruptedException {
+
+        CountDownLatch latch = new CountDownLatch(255);
+
+        for (int i = 1; i < 10; i++) {
+            String ip = "10.229.36." + i;
+            new Thread(new getDelay(ip, latch)).start();
+        }
+        try {
+            latch.await();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        log.info("main 结束");
+    }
+
+    static class getDelay implements Runnable {
+
+        private String ip;
+        private CountDownLatch latch;
+
+        public getDelay(String ip, CountDownLatch latch) {
+            this.ip = ip;
+            this.latch = latch;
+        }
+
+        @Override
+        public void run() {
+            try {
+                Map<String, String> win = PingUtils.getNetworkStatusByPing("win", "ping " + ip + " -n 1 -w 99999");
+                String delay = win.get("delay");
+                log.info("当前ip: {} , 延迟： {}", ip, delay);
+            } finally {
+                latch.countDown();
+            }
+        }
+    }
+
+    @Test
+    public void cleanList() {
+        double[] data = new double[]{1, 99999, 99999, 99999, 99999, 99999, 99999, 99999, 99999, 99999, 99999, 99999, 99999, 99999, 99999, 99999, 99999, 99999, 99999, 99999, 99999, 15, 99999, 99999};
+        List<Double> dataList = new ArrayList<>();
+        for (double vo : data) {
+            dataList.add(vo);
+        }
+        List<Double> outliersList = sigma3Filter(dataList);
+        System.out.println(JSON.toJSONString(outliersList));
+
+    }
+
+    private List<Double> sigma3Filter(List<Double> data) {
+        List<Double> returnList = new ArrayList<>(data);
+        double[] dataA = new double[data.size()];
+        for (int i = 0; i < data.size(); i++) {
+            dataA[i] = data.get(i);
+        }
+        List<Double> outliersList = sigma(dataA, dataA, 3);
+        for (double vo : outliersList) {
+            if (returnList.contains(vo)) {
+                returnList.remove(vo);
+            }
+        }
+        return returnList;
+    }
+
+    public static List<Double> sigma(double[] data, double[] arr, int x) {
+
+        double avg = StatUtils.mean(data);
+        System.out.println("算数平均值μ：" + avg);//算数平均值
+
+        StandardDeviation standardDeviation = new StandardDeviation();
+        double stDev = standardDeviation.evaluate(data);
+        System.out.println("标准差σ为：" + stDev);
+
+        List<Double> outliersList = new ArrayList<>();
+        for (double vo : arr) {
+            //判断异常值方法
+            System.out.println("gongshi 1 :" + Math.abs(vo - avg));
+            System.out.println("gongshi 2 :" + x * stDev);
+            if (Math.abs(vo - avg) > (x * stDev)) {
+                outliersList.add(vo);
+                System.out.println("使用" + x + "σ准则进行过滤，该数组中的" + vo + "属于异常值!");
+            }
+        }
+        return outliersList;
+    }
+
+    @Test
+    void test5() {
+        CountDownLatch latch = new CountDownLatch(10);
+
+        int j = 0;
+
+        for (int i = 0; i < 10; i++) {
+            new Thread(new Sout(j, latch)).start();
+        }
+        try {
+            latch.await(20, TimeUnit.SECONDS);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+
+    static class Sout implements Runnable {
+
+        private int num;
+        private CountDownLatch latch;
+
+        public Sout(int num, CountDownLatch latch) {
+            this.num = num;
+            this.latch = latch;
+        }
+
+        @Override
+        public void run() {
+            try {
+                Thread.sleep(4000);
+                log.info("num: {}, date:{}", num + 1, new SimpleDateFormat("yyyy-MM-dd HH:mm:ss:SSS").format(new Date()));
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            } finally {
+                latch.countDown();
+            }
+        }
+    }
+
+    @Test
+    void test() {
+        List<Integer> tasks = new ArrayList<>();
+        for (int i = 0; i < 100; i++) {
+            tasks.add(i);
+        }
+        ExecutorService pool = Executors.newFixedThreadPool(20);
+
+        CountDownLatch latch = new CountDownLatch(tasks.size());
+
+        for (Integer task : tasks) {
+            pool.submit(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        System.out.println("task " + task + " end");
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    } finally {
+                        latch.countDown();
+                    }
+                }
+            });
+
+        }
+    }
+
+    @Test
+    void test6() throws UnknownHostException {
+
+        String[] split = "192.168.0.1".replace(".","\\").split("[^\\d]+");
+        System.out.println(split.length);
+        int a = Integer.valueOf(split[0]);
+        int b = Integer.valueOf(split[1]);
+        int c = Integer.valueOf(split[2]);
+        int d = Integer.valueOf(split[3]);
+        double result = a * Math.pow(2, 24) + b * Math.pow(2, 16) + c * Math.pow(2, 8) + d;
+        System.out.println(Double.valueOf(result));
+
+    }
+
+    @Test
+    void test7() throws UnknownHostException {
+    }
 }
