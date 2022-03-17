@@ -47,16 +47,16 @@ public class PointUtils {
         if (tan >= 0){
             for (int i = 0; i < numberOfCopies.intValue(); i++) {
                 Point2D.Double onePoint = new Point2D.Double();
-                onePoint.x = startPoint.getX() + BigDecimal.valueOf(xIncrement).multiply(BigDecimal.valueOf(i)).multiply(BigDecimal.valueOf(Threshold)).doubleValue();
-                onePoint.y = startPoint.getY() + BigDecimal.valueOf(yIncrement).multiply(BigDecimal.valueOf(i)).multiply(BigDecimal.valueOf(Threshold)).doubleValue();
+                onePoint.x = startPoint.getX() + BigDecimal.valueOf(xIncrement).multiply(BigDecimal.valueOf(i)).doubleValue();
+                onePoint.y = startPoint.getY() + BigDecimal.valueOf(yIncrement).multiply(BigDecimal.valueOf(i)).doubleValue();
                 resultList.add(onePoint);
             }
         }else {
             yIncrement = -yIncrement;
             for (int i = 0; i < numberOfCopies.intValue(); i++) {
                 Point2D.Double onePoint = new Point2D.Double();
-                onePoint.x = startPoint.getX() - BigDecimal.valueOf(xIncrement).multiply(BigDecimal.valueOf(i)).multiply(BigDecimal.valueOf(Threshold)).doubleValue();
-                onePoint.y = startPoint.getY() + BigDecimal.valueOf(yIncrement).multiply(BigDecimal.valueOf(i)).multiply(BigDecimal.valueOf(Threshold)).doubleValue();
+                onePoint.x = startPoint.getX() - BigDecimal.valueOf(xIncrement).multiply(BigDecimal.valueOf(i)).doubleValue();
+                onePoint.y = startPoint.getY() + BigDecimal.valueOf(yIncrement).multiply(BigDecimal.valueOf(i)).doubleValue();
                 resultList.add(onePoint);
             }
         }

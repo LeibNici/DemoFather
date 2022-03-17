@@ -324,10 +324,10 @@ public class RecordPointTest {
     @Test
     void test17() {
 
-        Point2D.Double start = new Point2D.Double(0, 00);
-        Point2D.Double end = new Point2D.Double(0, 10);
+        Point2D.Double start = new Point2D.Double(7782.66575, 6279.56521);
+        Point2D.Double end = new Point2D.Double(6578.74651, 5372.44958);
 
-        List<Point2D.Double> list = PointUtils.BasePoint(start, end, 1);
+        List<Point2D.Double> list = PointUtils.BasePoint(start, end, 12);
         log.info("123");
 
 
