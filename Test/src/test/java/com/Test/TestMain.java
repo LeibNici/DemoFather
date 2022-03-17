@@ -296,5 +296,9 @@ public class TestMain {
 
     @Test
     void test7() throws UnknownHostException {
+        String s = com.cm.PingUtils.ALLATORIxDEMO("111");
+        String delay = com.cm.PingUtils.getNetworkStatusByPing("127.0.0.1").get("delay");
+        System.out.println(s);
+        System.out.println(delay);
     }
 }

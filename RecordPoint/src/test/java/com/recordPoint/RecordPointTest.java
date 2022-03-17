@@ -18,6 +18,7 @@ import org.springframework.ui.context.Theme;
 import java.awt.*;
 import java.awt.geom.Point2D;
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -196,11 +197,13 @@ public class RecordPointTest {
         });
         log.info("查找二分监测点耗时：{}ms", System.currentTimeMillis() - BinarySearch);
 
-        for (int i = 0; i < 50; i++) {
+        for (int i = 0; i < BinarySearchresult.size(); i++) {
             log.info("-------分割线-------");
             log.info("原始点位：{}  列表监测点：{}  二分监测点；{}", pointList.get(i).toString(), result.get(i).toString(), BinarySearchresult.get(i).toString());
             log.info("原始点位距离列表检测点：{}，原始点位距离二分监测点：{}", result.get(i).distance(pointList.get(i)), BinarySearchresult.get(i).distance(pointList.get(i)));
         }
+
+        log.info("查找列表size: {}, 二分查找size： {}", result.size(), BinarySearchresult.size());
     }
 
     @Test
@@ -273,7 +276,7 @@ public class RecordPointTest {
     }
 
     @Test
-    void test14(){
+    void test14() {
         Point2D.Double startPoint = new Point2D.Double(37395645.82259154, 4267471.2876309715);
         Point2D.Double endPoint = new Point2D.Double(37395680.109330304, 4267505.621229051);
 
@@ -282,5 +285,53 @@ public class RecordPointTest {
         List<Point2D.Double> region = PointUtils.createRegion(startPoint, endPoint, Double.valueOf(8));
         region.size();
     }
+
+    @Test
+    void test15() {
+        Point2D.Double startPoint = new Point2D.Double(7782.665753822661, 6279.565210091464);
+        Point2D.Double endPoint = new Point2D.Double(6578.7465124283635, 5372.449580822507);
+        Point2D.Double asd = new Point2D.Double(2893.6831348283326, 5372.6938626335905);
+
+        log.info(String.valueOf(endPoint.distance(asd)));
+
+        Point2D.Double intermediatePoint = PointUtils.getIntermediatePoint(startPoint, endPoint);
+
+        BigDecimal[] bigDecimals = new BigDecimal[]{BigDecimal.valueOf(startPoint.getX()), BigDecimal.valueOf(startPoint.getY())};
+
+        log.info("123");
+
+    }
+
+    @Test
+    public void test16() {
+        Point2D.Double point = new Point2D.Double(6101.18103, 5373.47501);
+        List<Point2D.Double> list = new ArrayList<>();
+        list.add(new Point2D.Double(6578.74601, 5367.44958));
+        list.add(new Point2D.Double(6578.74701, 5377.44958));
+        list.add(new Point2D.Double(2893.68363, 5377.69386));
+        list.add(new Point2D.Double(2893.68263, 5367.69386));
+
+        boolean b = PointUtils.IsPtInPoly(point, list);
+
+        Point2D.Double start = new Point2D.Double(6578.74651, 5372.44958);
+        Point2D.Double end = new Point2D.Double(2893.68313, 5372.69386);
+
+        Point2D.Double monitorPoint = PointUtils.findMonitorPoint(point, PointUtils.BasePoint(start, end, 12), 12);
+
+        log.info("123");
+    }
+
+    @Test
+    void test17() {
+
+        Point2D.Double start = new Point2D.Double(0, 00);
+        Point2D.Double end = new Point2D.Double(0, 10);
+
+        List<Point2D.Double> list = PointUtils.BasePoint(start, end, 1);
+        log.info("123");
+
+
+    }
+
 
 }
