@@ -15,10 +15,13 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.Repeat;
 import org.springframework.ui.context.Theme;
 
+import javax.xml.bind.annotation.XmlAnyAttribute;
 import java.awt.*;
 import java.awt.geom.Point2D;
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.math.BigInteger;
+import java.math.RoundingMode;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -306,17 +309,11 @@ public class RecordPointTest {
     public void test16() {
         Point2D.Double point = new Point2D.Double(6101.18103, 5373.47501);
         List<Point2D.Double> list = new ArrayList<>();
-        list.add(new Point2D.Double(6578.74601, 5367.44958));
-        list.add(new Point2D.Double(6578.74701, 5377.44958));
-        list.add(new Point2D.Double(2893.68363, 5377.69386));
-        list.add(new Point2D.Double(2893.68263, 5367.69386));
+        list.add(new Point2D.Double(4788.74076384359, 5493.35190354102));
+        list.add(new Point2D.Double(4736.78747118101, 5452.44615012278));
+        list.add(new Point2D.Double(4820.09188872618, 5451.8489858393));
 
-        boolean b = PointUtils.IsPtInPoly(point, list);
-
-        Point2D.Double start = new Point2D.Double(6578.74651, 5372.44958);
-        Point2D.Double end = new Point2D.Double(2893.68313, 5372.69386);
-
-        Point2D.Double monitorPoint = PointUtils.findMonitorPoint(point, PointUtils.BasePoint(start, end, 12), 12);
+        Point2D.Double aDouble = PointUtils.avgPoint(list);
 
         log.info("123");
     }
@@ -324,13 +321,26 @@ public class RecordPointTest {
     @Test
     void test17() {
 
-        Point2D.Double start = new Point2D.Double(7782.66575, 6279.56521);
-        Point2D.Double end = new Point2D.Double(6578.74651, 5372.44958);
+        Point2D.Double start = new Point2D.Double(0, 0);
+        Point2D.Double end = new Point2D.Double(1, -1);
 
-        List<Point2D.Double> list = PointUtils.BasePoint(start, end, 12);
+        double s = Math.atan2(start.getX() - end.getX(), start.getY() - end.getY());
+
+        double v = Math.toDegrees(Math.atan2(start.getX() - end.getX(), start.getY() - end.getY()));
+        if (v < 0) {
+            v = 360 + v;
+        }
+
         log.info("123");
+    }
 
+    @Test
+    void test18() {
+        BigDecimal a = new BigDecimal("21.240626835525752");
+        BigDecimal b = new BigDecimal(12);
+        BigDecimal c = a.divide(b, RoundingMode.HALF_UP).setScale(0, RoundingMode.HALF_UP);
 
+        log.info("123");
     }
 
 

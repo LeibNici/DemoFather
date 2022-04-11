@@ -2,8 +2,10 @@ package com.springtest;
 
 import com.cm.domian.Driver;
 import com.cm.domian.User;
+import com.cm.domian.UserLombok;
 import com.cm.domian.vo.DriverVo;
 import com.cm.utils.AnalysisObject;
+import com.cm.utils.SpcUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Test;
 import org.springframework.beans.BeanUtils;
@@ -79,6 +81,29 @@ public class mainTest {
 
         String targetSql = sourceSql.replace("bus_car_operation", table_name);
         log.info(targetSql);
+
+    }
+
+    @Test
+    public void test4() {
+        List<UserLombok> list = new ArrayList<>();
+
+        for (int i = 0; i < 4; i++) {
+            UserLombok userLombok = new UserLombok();
+            userLombok.setUsername(String.valueOf(i));
+            userLombok.setAge(i);
+            userLombok.setDate(new Date());
+            list.add(userLombok);
+        }
+
+        list.forEach(System.out::println);
+
+    }
+
+    @Test
+    public void test5() {
+
+        SpcUtil.sout();
 
     }
 

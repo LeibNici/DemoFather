@@ -1,13 +1,12 @@
-package com.recordPoint.utils;
+package com.springMybatisPlus.utils;
 
-import sun.util.resources.ga.LocaleNames_ga;
+import com.springMybatisPlus.domain.IndexPoint;
 
 import java.awt.geom.Point2D;
 import java.math.BigDecimal;
-import java.math.BigInteger;
-import java.math.RoundingMode;
-import java.nio.file.Path;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import java.util.stream.Collectors;
 
 /**
@@ -16,6 +15,11 @@ import java.util.stream.Collectors;
  * @create: 2022-01-21
  */
 public class PointUtils {
+
+    static {
+        PointUtils pointUtil = new PointUtils();
+        System.out.println("dsa");
+    }
 
     /**
      * 给指定起点和终点，返回等距点位
@@ -26,21 +30,10 @@ public class PointUtils {
      * @return 返回等距点位（包含起点终点）
      */
     public static List<Point2D.Double> BasePoint(Point2D.Double startPoint, Point2D.Double endPoint, int Threshold) {
-
-        // 初始化结果集
-        ArrayList<Point2D.Double> resultList = new ArrayList<>();
-
         // 两点之间距离
-        BigDecimal distance = BigDecimal.valueOf(startPoint.distance(endPoint));
-
-        if (0 > distance.compareTo(BigDecimal.valueOf(Threshold))) {
-            resultList.add(startPoint);
-            resultList.add(endPoint);
-            return resultList;
-        }
-
+        Double distance = startPoint.distance(endPoint);
         // 均分份数
-        int numberOfCopies = distance.divide(BigDecimal.valueOf(Threshold), RoundingMode.HALF_UP).setScale(0, RoundingMode.HALF_UP).intValue();
+        BigDecimal numberOfCopies = new BigDecimal(distance).divide(new BigDecimal(Threshold), BigDecimal.ROUND_HALF_UP);
 
         Point2D.Double tempPoint = new Point2D.Double();
         if ((startPoint.getX() >= endPoint.getX() && startPoint.getY() >= endPoint.getY()) || (startPoint.getX() < endPoint.getX() && startPoint.getY() > endPoint.getY())) {
@@ -49,6 +42,8 @@ public class PointUtils {
             endPoint = tempPoint;
         }
 
+        // 初始化结果集
+        ArrayList<Point2D.Double> resultList = new ArrayList<>();
         // 计算tan角度，防止重复计算
         double tan = slope(startPoint, endPoint);
 
@@ -56,7 +51,7 @@ public class PointUtils {
         double yIncrement = BigDecimal.valueOf(tan2sin(tan)).multiply(BigDecimal.valueOf(Threshold)).doubleValue();
 
         if (tan >= 0) {
-            for (int i = 0; i < numberOfCopies; i++) {
+            for (int i = 0; i < numberOfCopies.intValue(); i++) {
                 Point2D.Double onePoint = new Point2D.Double();
                 onePoint.x = startPoint.getX() + BigDecimal.valueOf(xIncrement).multiply(BigDecimal.valueOf(i)).doubleValue();
                 onePoint.y = startPoint.getY() + BigDecimal.valueOf(yIncrement).multiply(BigDecimal.valueOf(i)).doubleValue();
@@ -64,7 +59,7 @@ public class PointUtils {
             }
         } else {
             yIncrement = -yIncrement;
-            for (int i = 0; i < numberOfCopies; i++) {
+            for (int i = 0; i < numberOfCopies.intValue(); i++) {
                 Point2D.Double onePoint = new Point2D.Double();
                 onePoint.x = startPoint.getX() - BigDecimal.valueOf(xIncrement).multiply(BigDecimal.valueOf(i)).doubleValue();
                 onePoint.y = startPoint.getY() + BigDecimal.valueOf(yIncrement).multiply(BigDecimal.valueOf(i)).doubleValue();
@@ -236,26 +231,17 @@ public class PointUtils {
         return result;
     }
 
-    /**
-     * 寻找最佳匹配监控点
-     *
-     * @param point            监测点位
-     * @param monitorPointList 监测点
-     * @param Threshold
-     * @return 返回指定基础点位中的命中目标
-     * 时间复杂度 O(mn)
-     */
-    public static Point2D.Double findMonitorPointPro(Point2D.Double point, List<Point2D.Double> monitorPointList, int Threshold) {
-        List<Point2D.Double> collect = monitorPointList.stream()
-                .filter(onePoint -> onePoint.getX() > (point.getX() - Threshold) && onePoint.getX() < (point.getX() + Threshold) && onePoint.getY() > (point.getY() - Threshold) && onePoint.getY() < (point.getY() + Threshold))
+    public static IndexPoint findMonitorPointPro(Point2D.Double point, List<IndexPoint> monitorPointList, int Threshold) {
+        List<IndexPoint> collect = monitorPointList.stream()
+                .filter(onePoint -> onePoint.getPoint().getX() > (point.getX() - Threshold) && onePoint.getPoint().getX() < (point.getX() + Threshold) && onePoint.getPoint().getY() > (point.getY() - Threshold) && onePoint.getPoint().getY() < (point.getY() + Threshold))
                 .collect(Collectors.toList());
         double shortestDistance = Threshold;
-        Point2D.Double result = new Point2D.Double();
-        for (Point2D.Double onePoint : collect) {
-            if (onePoint.distance(point) < shortestDistance) {
+        IndexPoint result = new IndexPoint();
+        for (IndexPoint onePoint : collect) {
+            if (onePoint.getPoint().distance(point) < shortestDistance) {
                 result = onePoint;
             }
-            shortestDistance = onePoint.distance(point);
+            shortestDistance = onePoint.getPoint().distance(point);
         }
         return result;
     }
@@ -477,63 +463,5 @@ public class PointUtils {
 
     }
 
-
-    public static List<Long> AutoPathFinding(LinkedList<Long> linkedList[], Long start, Long end) {
-        LinkedList<Long> path = new LinkedList<>();
-        if (start.equals(end)) {
-            path.add(start);
-            return path;
-        }
-
-        Queue<Long> queue = new LinkedList<>();
-        queue.add(start);
-
-        boolean isFind[] = new boolean[linkedList.length];
-        isFind[start.intValue()] = true;
-
-        Long[] prev = new Long[linkedList.length];
-        for (int i = 0; i < prev.length; i++) {
-            prev[i] = -1L;
-        }
-
-        while (!queue.isEmpty()) {
-            Long current = queue.poll();
-            for (int i = 0; i < linkedList[current.intValue()].size(); i++) {
-                Long target = linkedList[current.intValue()].get(i);
-
-                if (!isFind[target.intValue()]) {
-                    isFind[target.intValue()] = true;
-                    prev[target.intValue()] = current;
-
-                    if (target.equals(end)) {
-                        showSearchPath(path, prev, start, end);
-                        queue.clear();
-                        break;
-                    } else {
-                        queue.add(target);
-                    }
-                }
-            }
-        }
-        return path;
-    }
-
-    private static void showSearchPath(LinkedList<Long> path, Long[] prev, Long start, Long end) {
-        if (prev[end.intValue()] != -1 && !start.equals(end)) {
-            showSearchPath(path, prev, start, prev[end.intValue()]);
-        }
-        path.add(end);
-    }
-
-    public static Point2D.Double avgPoint(List<Point2D.Double> pointList) {
-        double sumX = 0;
-        double sumY = 0;
-        int size = pointList.size();
-        for (Point2D.Double aPoint : pointList) {
-            sumX += aPoint.getX();
-            sumY += aPoint.getY();
-        }
-        return new Point2D.Double(sumX / size, sumY / size);
-    }
 }
 

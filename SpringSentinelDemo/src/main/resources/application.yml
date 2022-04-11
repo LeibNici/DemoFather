@@ -1,0 +1,11 @@
+spring:
+  cloud:
+    sentinel:
+      transport:
+        dashboard: localhost:8082
+      eager: true
+  application:
+    name: sentinelDemo
+
+  main:
+    allow-circular-references: true

@@ -5,14 +5,18 @@ import com.Test.test.PingUtils;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.google.common.collect.Multimaps;
+import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.math3.stat.StatUtils;
 import org.apache.commons.math3.stat.descriptive.moment.StandardDeviation;
 import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
+import org.mockito.internal.matchers.Find;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import javax.swing.plaf.nimbus.NimbusLookAndFeel;
+import javax.xml.crypto.dsig.keyinfo.RetrievalMethod;
 import java.io.*;
 import java.math.BigDecimal;
 import java.net.HttpURLConnection;
@@ -283,7 +287,7 @@ public class TestMain {
     @Test
     void test6() throws UnknownHostException {
 
-        String[] split = "192.168.0.1".replace(".","\\").split("[^\\d]+");
+        String[] split = "192.168.0.1".replace(".", "\\").split("[^\\d]+");
         System.out.println(split.length);
         int a = Integer.valueOf(split[0]);
         int b = Integer.valueOf(split[1]);
@@ -300,5 +304,47 @@ public class TestMain {
         String delay = com.cm.PingUtils.getNetworkStatusByPing("127.0.0.1").get("delay");
         System.out.println(s);
         System.out.println(delay);
+    }
+
+    @Test
+    void test8() {
+        Ted ted1 = new Ted(1, 2);
+        Ted ted2 = new Ted(2, 6);
+        Ted ted3 = new Ted(2, 10);
+        Ted ted4 = new Ted(10, 13);
+
+        List<Ted> list = new LinkedList<>(Arrays.asList(ted1, ted2, ted3, ted4));
+        LinkedList<Integer> adj[] = new LinkedList[20];
+        for (int i = 0; i < 20; i++) {
+            adj[i] = new LinkedList<>();
+        }
+
+        for (Ted ted : list) {
+            adj[ted.getId()].add(ted.getNext());
+        }
+
+        log.info("123");
+
+    }
+
+
+    @Data
+    class Ted {
+        private int id;
+        private int next;
+
+        public Ted(int id, int next) {
+            this.id = id;
+            this.next = next;
+        }
+    }
+
+    @Test
+    void test9(){
+        ArrayList<Object> objects = new ArrayList<>();
+        for (int i = 1; i < objects.size(); i++) {
+            Object o = objects.get(i);
+            System.out.println("123");
+        }
     }
 }
