@@ -1,5 +1,6 @@
 package com.springMybatisPlus;
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.springMybatisPlus.domain.BusRegionSub;
@@ -191,8 +192,10 @@ public class mainTest {
 
     }
 
+
     @Test
     void test5(){
+        List<Object> ss = busRegionSubMapper.ss();
 
     }
 

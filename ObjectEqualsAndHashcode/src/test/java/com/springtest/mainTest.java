@@ -1,8 +1,11 @@
 package com.springtest;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.cm.domian.Driver;
 import com.cm.domian.User;
 import com.cm.domian.UserLombok;
+import com.cm.domian.Temp;
 import com.cm.domian.vo.DriverVo;
 import com.cm.utils.AnalysisObject;
 import com.cm.utils.SpcUtil;
@@ -11,6 +14,7 @@ import org.junit.Test;
 import org.springframework.beans.BeanUtils;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import java.lang.reflect.Type;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -90,7 +94,7 @@ public class mainTest {
 
         for (int i = 0; i < 4; i++) {
             UserLombok userLombok = new UserLombok();
-            userLombok.setUsername(String.valueOf(i));
+            userLombok.setName(String.valueOf(i));
             userLombok.setAge(i);
             userLombok.setDate(new Date());
             list.add(userLombok);
@@ -105,6 +109,35 @@ public class mainTest {
 
         SpcUtil.sout();
 
+    }
+
+    @Test
+    public void test6() {
+        String s = "{\"user\":[{\"name\":\"1\",\"age\":1},{\"name\":\"2\",\"age\":2},{\"name\":\"3\",\"age\":3}]}";
+        Map<String, Object> map = JSON.parseObject(s, Map.class);
+        List<Map<String, String>> list = (List<Map<String, String>>) map.get("user");
+        List<Temp> ls = new ArrayList<>();
+        list.forEach(stringStringMap -> {
+            Temp temp = JSON.parseObject(JSON.toJSONString(stringStringMap), Temp.class);
+            ls.add(temp);
+        });
+        log.info("123");
+    }
+
+    class Se {
+        private String user;
+    }
+
+    @Test
+    public void test23() throws InstantiationException, IllegalAccessException {
+//        Class<?> aClass = Class.forName("com.springtest.mainTest$Person");
+//        aClass.getMethod("Default", new Class[]{String.class}).invoke()
+    }
+
+    class Person {
+        public void Default(String name) {
+            System.out.println(name);
+        }
     }
 
 }

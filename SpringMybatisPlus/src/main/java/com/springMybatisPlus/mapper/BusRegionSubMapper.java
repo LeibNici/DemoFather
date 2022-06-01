@@ -3,6 +3,7 @@ package com.springMybatisPlus.mapper;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.springMybatisPlus.domain.BusRegionSub;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Select;
 
 import java.util.List;
 
@@ -14,5 +15,8 @@ import java.util.List;
  */
 @Mapper
 public interface BusRegionSubMapper extends BaseMapper<BusRegionSub> {
+
+    @Select("select * from safea")
+    List<Object> ss();
 
 }

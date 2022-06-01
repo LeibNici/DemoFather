@@ -1,0 +1,4 @@
+1650256264789|16|statement|connection 3|url jdbc:p6spy:postgresql://10.51.77.88:5432/zlw|SELECT * FROM cm_point_correction(?,?,?)|SELECT * FROM cm_point_correction(37418275.8499,4379341.04048,12)
+1650256264798|25|statement|connection 20|url jdbc:postgresql://10.51.77.88:5432/zlw|SELECT * FROM cm_point_correction(?,?,?)|SELECT * FROM cm_point_correction(37418275.8499,4379341.04048,12)
+1650257798701|19|statement|connection 3|url jdbc:p6spy:postgresql://10.51.77.88:5432/zlw|SELECT * FROM cm_point_correction(?,?,?)|SELECT * FROM cm_point_correction(37418277.20637,4379844.72649,12)
+1650257798710|28|statement|connection 24|url jdbc:postgresql://10.51.77.88:5432/zlw|SELECT * FROM cm_point_correction(?,?,?)|SELECT * FROM cm_point_correction(37418277.20637,4379844.72649,12)

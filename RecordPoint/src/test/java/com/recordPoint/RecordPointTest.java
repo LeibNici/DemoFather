@@ -23,10 +23,8 @@ import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.math.RoundingMode;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
+import java.util.*;
 import java.util.List;
-import java.util.Map;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.FutureTask;
@@ -322,15 +320,11 @@ public class RecordPointTest {
     void test17() {
 
         Point2D.Double start = new Point2D.Double(0, 0);
-        Point2D.Double end = new Point2D.Double(1, -1);
-
-        double s = Math.atan2(start.getX() - end.getX(), start.getY() - end.getY());
-
-        double v = Math.toDegrees(Math.atan2(start.getX() - end.getX(), start.getY() - end.getY()));
+        Point2D.Double end = new Point2D.Double(10, 0);
+        double v = Math.toDegrees(Math.atan2(end.getY() - start.getY(), end.getX() - start.getX()));
         if (v < 0) {
             v = 360 + v;
         }
-
         log.info("123");
     }
 
@@ -339,6 +333,45 @@ public class RecordPointTest {
         BigDecimal a = new BigDecimal("21.240626835525752");
         BigDecimal b = new BigDecimal(12);
         BigDecimal c = a.divide(b, RoundingMode.HALF_UP).setScale(0, RoundingMode.HALF_UP);
+
+        log.info("123");
+    }
+
+    @Test
+    void test19() {
+        Point2D.Double start = new Point2D.Double(0, 0);
+        Point2D.Double end = new Point2D.Double(10, 18);
+        for (int i = 0; i < 100; i++) {
+            Point2D.Double rel = new Point2D.Double(0.2 + i * 0.1, 0.4 + i * 0.1);
+            long startT = System.currentTimeMillis();
+            Point2D.Double mapPoint = PointUtils.mapPoint(start, end, rel);
+            log.info(mapPoint.toString());
+            log.info("耗时：{}", System.currentTimeMillis() - startT);
+            log.info("-----------------------------------");
+        }
+        log.info("123");
+    }
+
+    @Test
+    void test20() {
+        Point2D.Double point1 = new Point2D.Double(0, 0);
+        Point2D.Double point2 = new Point2D.Double(10, 10);
+        Point2D.Double point3 = new Point2D.Double(20, 0);
+
+        Point2D.Double checkPoint = new Point2D.Double(3, 3);
+        Point2D.Double resultPoint = new Point2D.Double();
+
+        List<Point2D.Double> pointList = new LinkedList<>(Arrays.asList(point1, point2, point3));
+
+        for (int i = 1; i < pointList.size(); i++) {
+            Point2D.Double last = pointList.get(i - 1);
+            Point2D.Double current = pointList.get(i);
+            List<Point2D.Double> region = PointUtils.createRegion(last, current, 10D);
+
+            if (PointUtils.IsPtInPoly(checkPoint,region)) {
+                resultPoint = PointUtils.mapPoint(last, current, checkPoint);
+            }
+        }
 
         log.info("123");
     }

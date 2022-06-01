@@ -30,8 +30,12 @@
         <module>SpringRedisson</module>
         <module>SpringMQ-P</module>
         <module>SpringMQ-C</module>
-        <module>SpringSentinelDemo</module>
         <module>SpringVedio</module>
+        <module>SpringPostGre</module>
+        <module>SpringGeoTools</module>
+        <module>SpringHttp</module>
+        <module>SpringPoiTl</module>
+        <module>SpringJavaCV</module>
     </modules>
     <parent>
         <groupId>org.springframework.boot</groupId>

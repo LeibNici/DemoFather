@@ -19,4 +19,9 @@ public class mainTest {
         map.size();
     }
 
+    @Test
+    public void test1(){
+
+    }
+
 }

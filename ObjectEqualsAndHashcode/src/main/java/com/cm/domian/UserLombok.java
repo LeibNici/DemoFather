@@ -9,7 +9,7 @@ import java.util.Objects;
 @Data
 public class UserLombok {
 
-    private String username;
+    private String name;
 
     private Integer age;
 

@@ -1,7 +1,5 @@
 package com.ThreadPool.task;
 
-import com.ThreadPool.ThreadPoolApplication;
-import com.sun.scenario.effect.impl.prism.ps.PPSBlend_ADDPeer;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 

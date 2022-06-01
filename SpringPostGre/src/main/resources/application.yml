@@ -1,0 +1,20 @@
+spring:
+  datasource:
+    driver-class-name: com.p6spy.engine.spy.P6SpyDriver
+    url: jdbc:p6spy:postgresql://10.51.77.88:5432/fzys_jjt
+    username: postgres
+    password: 123456
+  redis:
+    host: localhost
+    port: 6379
+    password: bdtd123
+    lettuce:
+      pool:
+        min-idle: 0
+        max-idle: 10
+        max-wait: 100ms
+
+decorator:
+  datasource:
+    p6spy:
+      logging: slf4j

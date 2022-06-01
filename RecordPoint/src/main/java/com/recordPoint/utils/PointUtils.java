@@ -121,16 +121,19 @@ public class PointUtils {
      * @param endPoint   终点
      * @return 返回斜线方程
      */
-    public static Double slashEquation(Point2D.Double startPoint, Point2D.Double endPoint) {
+    public static Map<String, Double> slashEquation(Point2D.Double startPoint, Point2D.Double endPoint) {
+        Map<String, Double> slashEq = new LinkedHashMap<>();
         // A = y2 - y1
         double A = endPoint.getY() - startPoint.getY();
         // B = x1 - x2
         double B = startPoint.getX() - endPoint.getX();
         // C = x2 * y1 -x1 * y2
         double C = endPoint.getX() * startPoint.getY() - startPoint.getX() * endPoint.getY();
-
+        slashEq.put("A", A);
+        slashEq.put("B", B);
+        slashEq.put("C", C);
         // 斜线方程为： Ax + By + C = 0
-        return null;
+        return slashEq;
     }
 
     /**
@@ -145,8 +148,8 @@ public class PointUtils {
 
         // 求单位向量
         Point2D.Double unitVector = new Point2D.Double(endPoint.getX() - startPoint.getX(), endPoint.getY() - startPoint.getY());
-        BigDecimal xVector = new BigDecimal(unitVector.getX()).divide(new BigDecimal(Math.sqrt(Math.pow(unitVector.getX(), 2) + Math.pow(unitVector.getY(), 2))), 15, BigDecimal.ROUND_HALF_UP);
-        BigDecimal yVector = new BigDecimal(unitVector.getY()).divide(new BigDecimal(Math.sqrt(Math.pow(unitVector.getX(), 2) + Math.pow(unitVector.getY(), 2))), 15, BigDecimal.ROUND_HALF_UP);
+        BigDecimal xVector = BigDecimal.valueOf(unitVector.getX()).divide(BigDecimal.valueOf(Math.sqrt(Math.pow(unitVector.getX(), 2) + Math.pow(unitVector.getY(), 2))), 15, RoundingMode.HALF_UP);
+        BigDecimal yVector = BigDecimal.valueOf(unitVector.getY()).divide(BigDecimal.valueOf(Math.sqrt(Math.pow(unitVector.getX(), 2) + Math.pow(unitVector.getY(), 2))), 15, RoundingMode.HALF_UP);
 
         // 目标向量
         double xRealVector = realPoint.getX() - startPoint.getX();
@@ -154,18 +157,19 @@ public class PointUtils {
 
         // v*u(T)*u
         double x = new BigDecimal(xRealVector)
-                .multiply(new BigDecimal(xVector.doubleValue()).pow(2))
+                .multiply(BigDecimal.valueOf(xVector.doubleValue()).pow(2))
                 .add(new BigDecimal(yRealVector)
-                        .multiply(new BigDecimal(xVector.doubleValue())
-                                .multiply(new BigDecimal(yVector.doubleValue()))))
-                .setScale(15, BigDecimal.ROUND_HALF_UP).add(new BigDecimal(startPoint.getX())).doubleValue();
+                        .multiply(BigDecimal.valueOf(xVector.doubleValue())
+                                .multiply(BigDecimal.valueOf(yVector.doubleValue()))))
+                .setScale(15, RoundingMode.HALF_UP)
+                .add(BigDecimal.valueOf(startPoint.getX())).doubleValue();
         double y = new BigDecimal(xRealVector)
-                .multiply(new BigDecimal(xVector.doubleValue()))
-                .multiply(new BigDecimal(yVector.doubleValue()))
+                .multiply(BigDecimal.valueOf(xVector.doubleValue()))
+                .multiply(BigDecimal.valueOf(yVector.doubleValue()))
                 .add(new BigDecimal(yRealVector)
-                        .multiply(new BigDecimal(yVector.doubleValue()).pow(2)))
-                .setScale(15, BigDecimal.ROUND_HALF_UP)
-                .add(new BigDecimal(startPoint.getY())).doubleValue();
+                        .multiply(BigDecimal.valueOf(yVector.doubleValue()).pow(2)))
+                .setScale(15, RoundingMode.HALF_UP)
+                .add(BigDecimal.valueOf(startPoint.getY())).doubleValue();
 
         return new Point2D.Double(x, y);
 
