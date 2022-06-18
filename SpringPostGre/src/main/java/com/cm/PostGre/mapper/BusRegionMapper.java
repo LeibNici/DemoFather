@@ -23,7 +23,7 @@ import java.util.List;
 public interface BusRegionMapper extends BaseMapper<BusRegion> {
 
     @Insert("INSERT INTO bus_region " +
-            "(region_name, region_id, geom , start_x,start_y,end_x,end_y ) " +
+            "(region_name, region_id, geom , start_x,start_y,end_x,end_y) " +
             "VALUES " +
             "(#{regionName},#{regionId},(SELECT st_makeline(st_makepoint(#{last.positionX}, #{last.positionY}),st_makepoint(#{current.positionX}, #{current.positionY}))),#{last.positionX}, #{last.positionY},#{current.positionX}, #{current.positionY})")
     int insertBusRegion(@Param("regionName") String regionName, @Param("regionId") String regionId, @Param("last") TunnelCenterLine last, @Param("current") TunnelCenterLine current);
@@ -40,6 +40,6 @@ public interface BusRegionMapper extends BaseMapper<BusRegion> {
     @Select("SELECT id, region_name, st_asgeojson(geom) as geo_json FROM bus_region")
     List<BusRegionGeoJsonDO> selectGeoJson();
 
-    @Select("SELECT tt.name AS region_name , tt.id AS region_id ,cl.position_x,cl.position_y,cl.sort FROM t_tunnel_center_line cl LEFT JOIN t_tunnel tt ON cl.tunnel_id = tt.id WHERE tt.name IS NOT NULL")
+    @Select("SELECT tt.NAME AS region_name,tt.ID AS region_id,cl.position_x,cl.position_y,cl.guid,cl.sort FROM t_tunnel_center_line cl LEFT JOIN t_tunnel tt ON cl.tunnel_id = tt.ID WHERE tt.name IS NOT NULL")
     List<TunnelCenterLine> selectList();
 }

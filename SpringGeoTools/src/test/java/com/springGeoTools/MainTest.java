@@ -1,30 +1,36 @@
 package com.springGeoTools;
 
-import com.vividsolutions.jts.algorithm.distance.DistanceToPoint;
-import com.vividsolutions.jts.algorithm.distance.PointPairDistance;
-import com.vividsolutions.jts.geom.*;
-import com.vividsolutions.jts.io.ParseException;
-import com.vividsolutions.jts.io.WKTReader;
-import com.vividsolutions.jts.linearref.LinearLocation;
-import com.vividsolutions.jts.linearref.LocationIndexedLine;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
-import net.bytebuddy.implementation.bytecode.assign.TypeCasting;
+import org.geotools.data.simple.SimpleFeatureIterator;
+import org.geotools.feature.FeatureCollection;
+import org.geotools.geojson.feature.FeatureJSON;
+import org.geotools.geojson.geom.GeometryJSON;
+import org.geotools.geometry.jts.JTS;
 import org.geotools.geometry.jts.JTSFactoryFinder;
-import org.geotools.geometry.jts.ReferencedEnvelope;
+import org.geotools.referencing.CRS;
 import org.junit.jupiter.api.Test;
-import org.opengis.filter.capability.FunctionName;
-import org.opengis.filter.expression.Expression;
-import org.opengis.filter.expression.ExpressionVisitor;
-import org.opengis.filter.expression.Function;
-import org.opengis.filter.expression.Literal;
+import org.locationtech.jts.algorithm.distance.DistanceToPoint;
+import org.locationtech.jts.algorithm.distance.PointPairDistance;
+import org.locationtech.jts.geom.*;
+import org.locationtech.jts.io.ParseException;
+import org.locationtech.jts.io.WKTReader;
+import org.locationtech.jts.linearref.LinearLocation;
+import org.locationtech.jts.linearref.LocationIndexedLine;
+import org.opengis.feature.simple.SimpleFeature;
+import org.opengis.referencing.FactoryException;
+import org.opengis.referencing.crs.CoordinateReferenceSystem;
+import org.opengis.referencing.operation.MathTransform;
+import org.opengis.referencing.operation.TransformException;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import java.awt.*;
 import java.awt.Point;
+import java.io.IOException;
+import java.io.StringReader;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -100,5 +106,49 @@ public class MainTest {
             System.out.println(cc);
         }
 
+    }
+
+    private String geoJson = "{\"type\":\"FeatureCollection\",\"features\":[{\"type\":\"Feature\",\"properties\":{},\"geometry\":{\"type\":\"LineString\",\"coordinates\":[[0.014763,0.05991],[0.057077,0.052443],[0.047979,0.046177]]}},{\"type\":\"Feature\",\"properties\":{},\"geometry\":{\"type\":\"Polygon\",\"coordinates\":[[[0.010386,0.029268],[0.010386,0.047894],[0.023775,0.047894],[0.023775,0.029268],[0.010386,0.029268]]]}},{\"type\":\"Feature\",\"properties\":{},\"geometry\":{\"type\":\"LineString\",\"coordinates\":[[0.035319,0.033345],[0.035105,0.025277]]}}]}";
+
+    @Test
+    void test5() throws IOException {
+        String geoJson = "{\"type\":\"FeatureCollection\",\"features\":[{\"type\":\"Feature\",\"properties\":{},\"geometry\":{\"type\":\"LineString\",\"coordinates\":[[0.014763,0.05991],[0.057077,0.052443],[0.047979,0.046177]]}},{\"type\":\"Feature\",\"properties\":{},\"geometry\":{\"type\":\"Polygon\",\"coordinates\":[[[0.010386,0.029268],[0.010386,0.047894],[0.023775,0.047894],[0.023775,0.029268],[0.010386,0.029268]]]}},{\"type\":\"Feature\",\"properties\":{},\"geometry\":{\"type\":\"LineString\",\"coordinates\":[[0.035319,0.033345],[0.035105,0.025277]]}}]}";
+        GeometryJSON geometryJSON = new GeometryJSON(8);
+        Geometry read = geometryJSON.read(new StringReader(geoJson));
+        log.info("123");
+    }
+
+    @Test
+    void test66() throws IOException {
+        FeatureJSON featureJSON = new FeatureJSON(new GeometryJSON(8));
+        FeatureCollection featureCollection = featureJSON.readFeatureCollection(geoJson);
+        SimpleFeatureIterator features = (SimpleFeatureIterator) featureCollection.features();
+        while (features.hasNext()) {
+            SimpleFeature next = features.next();
+            Geometry geometry = (Geometry) next.getDefaultGeometry();
+            log.info("123");
+        }
+    }
+
+    @Test
+    void test67() throws IOException, FactoryException, TransformException {
+        CoordinateReferenceSystem sourceCRS = CRS.decode("EPSG:3857");
+        CoordinateReferenceSystem targetCRS = CRS.decode("EPSG:4326");
+        MathTransform mathTransform = CRS.findMathTransform(sourceCRS, targetCRS,true);
+
+        GeometryFactory geometryFactory = JTSFactoryFinder.getGeometryFactory();
+        Coordinate c1 = new Coordinate(3662.7893,5372.0141);
+        Coordinate c2 = new Coordinate(3662.7893,5372.0141);
+        Coordinate[] coordinates1 = new Coordinate[]{c1,c2};
+        LineString lineString = geometryFactory.createLineString(coordinates1);
+        LineString dis = (LineString) JTS.transform(lineString,mathTransform);
+        Coordinate[] coordinates = dis.getCoordinates();
+        log.info("123");
+    }
+
+    @Test
+    void test6(){
+
+        log.info("123");
     }
 }

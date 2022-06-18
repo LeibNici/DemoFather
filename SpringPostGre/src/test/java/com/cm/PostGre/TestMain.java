@@ -1,11 +1,9 @@
 package com.cm.PostGre;
 
-import com.cm.PostGre.domain.BusPointDO;
-import com.cm.PostGre.domain.BusRegion;
-import com.cm.PostGre.domain.BusRegionGeoJsonDO;
-import com.cm.PostGre.domain.TunnelCenterLine;
+import com.cm.PostGre.domain.*;
 import com.cm.PostGre.mapper.BusRegionMapper;
 import com.cm.PostGre.service.BusRegionService;
+import com.cm.PostGre.service.Impl.TopologyRelServiceImpl;
 import com.cm.PostGre.service.TunnelCenterLineService;
 import com.google.common.collect.Multimap;
 import com.google.common.collect.Multimaps;
@@ -22,6 +20,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import javax.media.jai.iterator.RandomIter;
 import javax.sound.sampled.Line;
 import java.awt.geom.Point2D;
 import java.io.IOException;
@@ -56,6 +55,29 @@ public class TestMain {
             }
         }
         log.info("123");
+    }
+
+    @Autowired
+    private TopologyRelServiceImpl topologyRelService;
+
+    @Test
+    void test6() {
+        List<TunnelCenterLine> center = busRegionMapper.selectList();
+        List<TopologyRel> topo = topologyRelService.list();
+        for (TopologyRel topologyRel : topo) {
+            TunnelCenterLine start = center.stream().filter(line -> line.getGuid().equals(topologyRel.getStartCode())).findFirst().orElse(null);
+            TunnelCenterLine end = center.stream().filter(line -> line.getGuid().equals(topologyRel.getEndCode())).findFirst().orElse(null);
+            busRegionService.insert(start.getRegionName(),start.getRegionId(),start,end);
+        }
+        log.info("123");
+
+    }
+
+    @Test
+    void test7() {
+        List<TopologyRel> list = topologyRelService.list();
+        log.info("123");
+
     }
 
     @Test

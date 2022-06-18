@@ -1,0 +1,6 @@
+spring:
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://10.51.77.88:5432/vehicle_network_zlw
+    username: postgres
+    password: 123456

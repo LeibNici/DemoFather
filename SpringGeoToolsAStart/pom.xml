@@ -9,7 +9,7 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>SpringGeoTools</artifactId>
+    <artifactId>SpringGeoToolsAStart</artifactId>
 
     <properties>
         <maven.compiler.source>8</maven.compiler.source>
@@ -30,12 +30,6 @@
             <artifactId>gt-geojson</artifactId>
             <version>${geotools.version}</version>
         </dependency>
-        <!-- https://mvnrepository.com/artifact/org.locationtech.proj4j/proj4j -->
-        <dependency>
-            <groupId>org.locationtech.proj4j</groupId>
-            <artifactId>proj4j</artifactId>
-            <version>1.1.5</version>
-        </dependency>
         <!-- https://mvnrepository.com/artifact/org.geotools/gt-referencing -->
         <dependency>
             <groupId>org.geotools</groupId>
@@ -47,8 +41,26 @@
             <artifactId>gt-epsg-hsql</artifactId>
             <version>${geotools.version}</version>
         </dependency>
+        <!-- https://mvnrepository.com/artifact/org.geotools/gt-shapefile -->
+        <dependency>
+            <groupId>org.geotools</groupId>
+            <artifactId>gt-graph</artifactId>
+            <version>${geotools.version}</version>
+        </dependency>
+
+
+
+        <dependency>
+            <groupId>org.postgresql</groupId>
+            <artifactId>postgresql</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.baomidou</groupId>
+            <artifactId>mybatis-plus-boot-starter</artifactId>
+        </dependency>
 
     </dependencies>
+
     <repositories>
         <repository>
             <id>repo1</id>

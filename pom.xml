@@ -36,6 +36,7 @@
         <module>SpringHttp</module>
         <module>SpringPoiTl</module>
         <module>SpringJavaCV</module>
+        <module>SpringGeoToolsAStart</module>
     </modules>
     <parent>
         <groupId>org.springframework.boot</groupId>

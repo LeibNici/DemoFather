@@ -103,7 +103,7 @@ public class test {
 
     @Test
     public void test3() throws InterruptedException {
-        Thread t1 = new Thread(()->{
+        Thread t1 = new Thread(() -> {
             try {
                 System.out.println("t1 running");
                 Thread.sleep(2000);
@@ -113,7 +113,7 @@ public class test {
         });
         t1.start();
 
-        Thread t2 = new Thread(()->{
+        Thread t2 = new Thread(() -> {
             try {
                 System.out.println("t2 running");
                 Thread.sleep(3000);
@@ -142,7 +142,7 @@ public class test {
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
-                    log.info("当前线程：{}",Thread.currentThread().getName());
+                    log.info("当前线程：{}", Thread.currentThread().getName());
                 }
             });
             future.get();
@@ -182,12 +182,54 @@ public class test {
                 Thread.sleep(3000);
                 System.out.println(String
                         .format("Sub Thread %d finished", id));
-                log.info("当前线程：{}",Thread.currentThread().getName());
+                log.info("当前线程：{}", Thread.currentThread().getName());
             } catch (InterruptedException e) {
                 e.printStackTrace();
             } finally {
                 latch.countDown();
             }
+        }
+    }
+
+    @Test
+    public void test6() throws InterruptedException {
+        log.info("123");
+        Thread thread = new Thread("123");
+        MyThread myThread = null;
+        try {
+            myThread = new MyThread().from().to().create(thread);
+        } catch (MyException_2 myException_2) {
+            myException_2.printStackTrace();
+        } catch (MyException_3 myException_3) {
+            myException_3.printStackTrace();
+        } catch (MyException_1 myException_1) {
+            myException_1.printStackTrace();
+        }
+        Thread.sleep(10000);
+        myThread.setFlag(false);
+    }
+
+    class MyThread{
+
+        private boolean flag = true;
+
+        public void setFlag(boolean flag) {
+            this.flag = flag;
+        }
+
+        public MyThread() {
+        }
+        public MyThread from() throws MyException_1 {
+            return this;
+        }
+        public MyThread to() throws MyException_2 {
+            return this;
+        }
+        public MyThread create(Thread thread) throws MyException_3 {
+            while (flag){
+                System.out.println("time_+"+Thread.currentThread().getId()+" name:"+Thread.currentThread().getName());
+            }
+            throw new MyException_3("3");
         }
     }
 }

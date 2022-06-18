@@ -1,5 +1,8 @@
 package com.ruoyi.system;
 
+import cn.hutool.core.collection.CollUtil;
+import cn.hutool.core.collection.ListUtil;
+import cn.hutool.core.io.FileUtil;
 import cn.hutool.core.util.StrUtil;
 import com.alibaba.fastjson.JSON;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
@@ -146,6 +149,13 @@ public class springtest {
             log.info(String.valueOf(System.currentTimeMillis()-start));
             Thread.sleep(1000);
         }
+    }
+
+    @Test
+    public void test31(){
+        List<Integer> list = new ArrayList<>(Arrays.asList(1,2,3,4,5,6,7,8,9));
+        List<List<Integer>> partition = ListUtil.partition(list, 4);
+        log.info("123");
     }
 
 }

@@ -11,11 +11,13 @@ import java.math.BigDecimal;
  * @create: 2022-04-14
  */
 @Data
+@TableName("t_tunnel_center_line")
 public class TunnelCenterLine implements Comparable<TunnelCenterLine> {
     private String regionName;
     private String regionId;
     private BigDecimal positionX;
     private BigDecimal positionY;
+    private String guid;
     private Long sort;
 
     @Override
